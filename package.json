@@ -1,0 +1,15 @@
+{
+  "name": "super-formula",
+  "version": "1.0.0",
+  "description": "a formula realize",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hansuku(www.hansuku.com)",
+  "license": "ISC",
+  "dependencies": {
+    "chevrotain": "^10.1.2",
+    "typescript": "^4.7.4"
+  }
+}
