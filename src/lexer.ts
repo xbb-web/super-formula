@@ -4,16 +4,29 @@ import { createToken, Lexer, TokenType } from 'chevrotain';
  * SeatMark
  * @desc Summary mark of Comparators and Calculator
  */
-export const SeatMark = createToken({ name: 'SeatMark', pattern: Lexer.NA });
+export const AddSubSeatMark = createToken({ name: 'AddSubSeatMark', pattern: Lexer.NA });
+export const MutDivSeatMark = createToken({ name: 'MutDivSeatMark', pattern: Lexer.NA });
+export const CompareSeatMark = createToken({ name: 'CompareSeatMark', pattern: Lexer.NA });
+export const VariableSeatMark = createToken({ name:  'VariableSeatMark', pattern: Lexer.NA })
 
 /**
  * RideMark
  * @desc eg: a * b
  */
-export const RideMark = createToken({
-  name: 'RideMark',
+export const MutMark = createToken({
+  name: 'MutMark',
   pattern: /\*/,
-  categories: SeatMark,
+  categories: MutDivSeatMark,
+});
+
+/**
+ * DivMark
+ * @desc eg: a / b
+ */
+ export const DivMark = createToken({
+  name: 'DidMark',
+  pattern: /\//,
+  categories: MutDivSeatMark,
 });
 
 /**
@@ -23,7 +36,7 @@ export const RideMark = createToken({
 export const AddMark = createToken({
   name: 'AddMark',
   pattern: /\+/,
-  categories: SeatMark,
+  categories: AddSubSeatMark,
 });
 
 /**
@@ -33,17 +46,7 @@ export const AddMark = createToken({
 export const SubMark = createToken({
   name: 'SubMark',
   pattern: /\-/,
-  categories: SeatMark,
-});
-
-/**
- * DivMark
- * @desc eg: a / b
- */
-export const DivMark = createToken({
-  name: 'DidMark',
-  pattern: /\//,
-  categories: SeatMark,
+  categories: AddSubSeatMark,
 });
 
 /**
@@ -53,7 +56,7 @@ export const DivMark = createToken({
 export const EqualMark = createToken({
   name: 'EqualMark',
   pattern: /\=\=/,
-  categories: SeatMark,
+  categories: CompareSeatMark,
 });
 
 /**
@@ -63,7 +66,7 @@ export const EqualMark = createToken({
 export const GtMark = createToken({
   name: 'GtMark',
   pattern: />/,
-  categories: SeatMark,
+  categories: CompareSeatMark,
 });
 
 /**
@@ -73,7 +76,7 @@ export const GtMark = createToken({
 export const LtMark = createToken({
   name: 'LtMark',
   pattern: /</,
-  categories: SeatMark,
+  categories: CompareSeatMark,
 });
 
 /**
@@ -83,7 +86,7 @@ export const LtMark = createToken({
 export const GteMark = createToken({
   name: 'GteMark',
   pattern: />=/,
-  categories: SeatMark,
+  categories: CompareSeatMark,
 });
 
 /**
@@ -93,7 +96,7 @@ export const GteMark = createToken({
 export const LteMark = createToken({
   name: 'LteMark',
   pattern: /<=/,
-  categories: SeatMark,
+  categories: CompareSeatMark,
 });
 
 /**
@@ -109,10 +112,10 @@ export const CommaMark = createToken({
  * VariableMark
  * @desc Variable analysis, default rule is self.keyName, you can re-registration for input.
  */
-// TODO: re-registration for other rule
 export const VariableMark = createToken({
   name: 'VariableMark',
-  pattern: /{self\.[a-z]+\_\d+}/,
+  pattern: /{.*}/,
+  categories: VariableSeatMark
 });
 
 /**
@@ -121,8 +124,15 @@ export const VariableMark = createToken({
  */
 export const NumberMark = createToken({
   name: 'NumberMark',
-  pattern: /\d+/
+  pattern: /\d+/,
+  categories: VariableSeatMark
 });
+
+export const StringMark = createToken({
+  name: 'StringMark',
+  pattern: /["|'].+["|']/,
+  categories: VariableSeatMark
+})
 
 /**
  * FunctionMark
@@ -167,9 +177,12 @@ const WhiteSpace = createToken({
 });
 
 export const AllLexerToken = [
-  SeatMark,
-  RideMark,
+  AddSubSeatMark,
+  MutDivSeatMark,
+  CompareSeatMark,
+  MutMark,
   SubMark,
+  DivMark,
   AddMark,
   SubMark,
   GteMark,
@@ -182,8 +195,10 @@ export const AllLexerToken = [
   FunctionMark,
   StartParen,
   CloseParen,
+  VariableSeatMark,
   NumberMark,
   VariableMark,
+  StringMark,
   ArrayMark
 ]
 

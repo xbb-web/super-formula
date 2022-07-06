@@ -1,12 +1,12 @@
 import { tokenMatcher, IToken } from 'chevrotain'
-import { AddMark, DivMark, RideMark, SubMark, GtMark, LtMark, GteMark, LteMark, EqualMark } from '../lexer'
+import { AddMark, DivMark, MutMark, SubMark, GtMark, LtMark, GteMark, LteMark, EqualMark } from '../lexer'
 
 export const NumberUtils = (val: any, op: IToken, rhsVal: any) => {
   if (tokenMatcher(op, AddMark)) {
     val += rhsVal
   } else if (tokenMatcher(op, DivMark)) {
     val /= rhsVal
-  } else if (tokenMatcher(op, RideMark)) {
+  } else if (tokenMatcher(op, MutMark)) {
     val *= rhsVal
   } else if (tokenMatcher(op, SubMark)) {
     val -= rhsVal
