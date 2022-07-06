@@ -59,6 +59,17 @@ export const EqualMark = createToken({
   categories: CompareSeatMark,
 });
 
+
+/**
+ * EqualMark
+ * @desc eg: a == b
+ */
+ export const UnEqualMark = createToken({
+  name: 'UnEqualMark',
+  pattern: /!\=/,
+  categories: CompareSeatMark,
+});
+
 /**
  * GtMark
  * @desc eg: a > b. Important: it registration order must take precedence over GteMark.
@@ -130,7 +141,7 @@ export const NumberMark = createToken({
 
 export const StringMark = createToken({
   name: 'StringMark',
-  pattern: /["|'].+["|']/,
+  pattern: /["|'][\u4e00-\u9fa5a-zA-Z0-9]+["|']/,
   categories: VariableSeatMark
 })
 
@@ -190,6 +201,7 @@ export const AllLexerToken = [
   GtMark,
   LtMark,
   EqualMark,
+  UnEqualMark,
   WhiteSpace,
   CommaMark,
   FunctionMark,

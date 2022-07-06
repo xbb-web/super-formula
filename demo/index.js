@@ -27,6 +27,8 @@ document.getElementById('exec').addEventListener('click', () => {
   } catch (error) {
     return alert('data value with:' + error)
   }
+  console.time()
   const res = formula.exec(input, formatData)
+  console.timeEnd()
   document.getElementById('output').value = res
 })
