@@ -1,5 +1,6 @@
 import { FormulaLexer } from './lexer'
 import { FormulaParser } from './parser'
+import { createSyntaxDiagramsCode } from 'chevrotain'
 
 export class Formula {
   public parserInstant: FormulaParser
@@ -13,5 +14,8 @@ export class Formula {
     this.parserInstant.input = result.tokens
     const cst = this.parserInstant.expression()
     return cst
+  }
+  genDiagrams() {
+    return createSyntaxDiagramsCode(this.parserInstant.getSerializedGastProductions())
   }
 }

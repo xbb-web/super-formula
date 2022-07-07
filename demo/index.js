@@ -31,4 +31,8 @@ document.getElementById('exec').addEventListener('click', () => {
   const res = formula.exec(input, formatData)
   console.timeEnd()
   document.getElementById('output').value = res
+  console.log(res)
+  // const diagrams = formula.genDiagrams()
+  // console.log(diagrams)
 })
+

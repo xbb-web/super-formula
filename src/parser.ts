@@ -2,7 +2,6 @@ import {
   EmbeddedActionsParser,
   IToken,
   ParserMethod,
-  Rule,
   tokenMatcher,
   TokenType,
 } from 'chevrotain';
@@ -28,7 +27,7 @@ import {
   UnEqualMark,
   StringMark
 } from './lexer';
-import { NumberUtils, deepGet } from './utils';
+import { deepGet } from './utils';
 import { FunctionSummary } from './function';
 
 export class FormulaParser extends EmbeddedActionsParser {
@@ -62,13 +61,13 @@ export class FormulaParser extends EmbeddedActionsParser {
    */
   private FunctionOp = this.RULE('FunctionOp', () => {
     const functionName = this.CONSUME(FunctionMark).image;
-    const firstParams = this.SUBRULE(this.SummaryEntry);
-    const params: Array<any> = [firstParams];
+    // const firstParams = this.SUBRULE(this.SummaryEntry);
+    const params: Array<any> = [];
     this.MANY_SEP({
-      SEP: (this.CONSUME1(CommaMark) as unknown) as TokenType,
+      SEP: CommaMark,
       DEF: () => {
-        const otherParams = this.SUBRULE1(this.SummaryEntry);
-        params.push(otherParams);
+        const subParams = this.SUBRULE1(this.SummaryEntry);
+        params.push(subParams);
       },
     });
     this.CONSUME2(CloseParen);
@@ -143,8 +142,7 @@ export class FormulaParser extends EmbeddedActionsParser {
    * Add and Sub Expression, eg: number - number | number + number
    */
   private AddExpression = this.RULE('AddExpression', () => {
-    // TODO: Fix the value type.
-    let leftValue: number | string, op, rightValue: number | string;
+    let leftValue: any, op: IToken, rightValue: any;
     leftValue = this.SUBRULE(this.MutExpression);
     this.MANY(() => {
       op = this.CONSUME(AddSubSeatMark);
@@ -162,7 +160,7 @@ export class FormulaParser extends EmbeddedActionsParser {
    * Multiplication and Division Expression, eg: number / number | number * number
    */
   private MutExpression = this.RULE('MutExpression', () => {
-    let leftValue: number | string, op, rightValue;
+    let leftValue: any, op, rightValue: any;
     leftValue = this.SUBRULE(this.AtomicExpression);
     // leftValue = parseInt(this.CONSUME(NumberMark).image, 10);
     this.MANY(() => {
@@ -193,7 +191,7 @@ export class FormulaParser extends EmbeddedActionsParser {
    * @private
    * @memberof FormulaParser
    */
-  private ArrayOp = this.RULE('Array', () => {
+  private ArrayOp = this.RULE('ArrayOp', () => {
     const ArrayData = this.CONSUME(ArrayMark);
     // Use ACTION can let JSON.parse be safe.detail: https://chevrotain.io/docs/guide/internals.html#assumption-1-the-parser-won-t-throw-errors-during-recording
     return this.ACTION(() => {

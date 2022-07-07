@@ -4,3 +4,5 @@ dist
 .vscode
 package-lock.json
 .parcel-cache
+lib
+esm
