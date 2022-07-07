@@ -1,16 +1,21 @@
 import { FormulaLexer } from './lexer'
 import { FormulaParser } from './parser'
+import { createSyntaxDiagramsCode } from 'chevrotain'
 
 export class Formula {
   public parserInstant: FormulaParser
   constructor(_data?: Record<string | number | symbol, any>) {
     this.parserInstant = new FormulaParser(_data)
   }
-  exec(string: string) {
+  exec(string: string, _data?: Record<string | number | symbol, any>) {
     const result = FormulaLexer.tokenize(string)
-    this.parserInstant.input = result.tokens
     console.log(result)
+    this.parserInstant.changeCustomData(_data)
+    this.parserInstant.input = result.tokens
     const cst = this.parserInstant.expression()
     return cst
+  }
+  genDiagrams() {
+    return createSyntaxDiagramsCode(this.parserInstant.getSerializedGastProductions())
   }
 }

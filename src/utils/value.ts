@@ -1,8 +1,9 @@
-export const deepGet = (obj, keys, defaultVal?) => {
+export const deepGet = (obj: any, keys: string, defaultVal?: any) => {
   return (
-    (!Array.isArray(keys)
-      ? keys.replace(/\[/g, '.').replace(/\]/g, '').split('.')
-      : keys
-    ).reduce((o, k) => (o || {})[k], obj) || defaultVal
+    keys
+      .replace(/\[/g, '.')
+      .replace(/\]/g, '')
+      .split('.')
+      .reduce((o: any, k: string) => (o || {})[k], obj) || defaultVal
   );
-}
+};

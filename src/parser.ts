@@ -1,66 +1,79 @@
-import { EmbeddedActionsParser, IToken, ParserMethod, Rule, TokenType } from 'chevrotain';
+import {
+  EmbeddedActionsParser,
+  IToken,
+  ParserMethod,
+  tokenMatcher,
+  TokenType,
+} from 'chevrotain';
 import {
   CloseParen,
   CommaMark,
   NumberMark,
-  SeatMark,
+  AddSubSeatMark,
+  MutDivSeatMark,
+  CompareSeatMark,
   StartParen,
   TokenVocabulary,
   VariableMark,
   FunctionMark,
   ArrayMark,
+  AddMark,
+  MutMark,
+  GtMark,
+  LtMark,
+  GteMark,
+  LteMark,
+  EqualMark,
+  UnEqualMark,
+  StringMark
 } from './lexer';
-import { NumberUtils, deepGet } from './utils'
-import { FunctionSummary } from './function'
+import { deepGet } from './utils';
+import { FunctionSummary } from './function';
 
 export class FormulaParser extends EmbeddedActionsParser {
-  private data?: Record<string | number | symbol, any>
-  constructor(private _data?: Record<string | number | symbol, any> ) {
+  private data?: Record<string | number | symbol, any>;
+  constructor(private _data?: Record<string | number | symbol, any>) {
     super(TokenVocabulary);
-    this.data = _data
+    this.data = _data;
     this.expression();
     this.performSelfAnalysis();
   }
-  
-  /** General expressions */
-  private SummaryExpression: ParserMethod<unknown[], unknown> = () => {
-    console.log(1111)
-    return this.RULE('SummaryExpression', () =>
-      this.OR([
-        /** Warning: The following order will lead to a change in execution priority. */
-        { ALT: () => this.SUBRULE(this.FunctionOp) },
-        { ALT: () => this.SUBRULE(this.ParenthesisExpression) },
-        { ALT: () => this.SUBRULE(this.VariableOp) },
-        { ALT: () => this.SUBRULE(this.NumberOp) },
-        { ALT: () => this.SUBRULE(this.ArrayOp) },
-      ]),
+
+  public changeCustomData = (
+    _data: Record<string | number | symbol, any> | undefined,
+  ) => {
+    this.data = _data;
+  };
+  /** ComputedStart */
+  public expression: ParserMethod<unknown[], unknown> = () => {
+    return this.SUBRULE(this.SummaryEntry);
+  };
+  /** General Rule */
+  private SummaryEntry: ParserMethod<unknown[], unknown> = () => {
+    return this.RULE('SummaryEntry', () => 
+      this.SUBRULE(this.CompareExpression)
     )
   };
-  /** Entry */
-  public expression: ParserMethod<unknown[], unknown> = () => {
-    return this.SUBRULE(this.SummaryExpression)
-  };
-
   /**
    * Function expressions
    * @private
    * @memberof FormulaParser
    */
   private FunctionOp = this.RULE('FunctionOp', () => {
-    console.log(333)
     const functionName = this.CONSUME(FunctionMark).image;
-    const leftParams = this.SUBRULE(this.SummaryExpression);
-    const params: Array<any> = [leftParams];
+    // const firstParams = this.SUBRULE(this.SummaryEntry);
+    const params: Array<any> = [];
     this.MANY_SEP({
-      SEP: this.CONSUME1(CommaMark) as unknown as TokenType,
+      SEP: CommaMark,
       DEF: () => {
-        const rightParams = this.SUBRULE1(this.SummaryExpression);
-        params.push(rightParams);
+        const subParams = this.SUBRULE1(this.SummaryEntry);
+        params.push(subParams);
       },
     });
     this.CONSUME2(CloseParen);
-    console.log({ functionName, params }, FunctionSummary[functionName] && FunctionSummary[functionName](params))
-    return FunctionSummary[functionName] && FunctionSummary[functionName](params);
+    return (
+      FunctionSummary[functionName] && FunctionSummary[functionName](params)
+    );
   });
 
   /**
@@ -72,7 +85,7 @@ export class FormulaParser extends EmbeddedActionsParser {
   private ParenthesisExpression = this.RULE('ParenthesisExpression', () => {
     let expValue;
     this.CONSUME(StartParen);
-    expValue = this.SUBRULE(this.SummaryExpression);
+    expValue = this.SUBRULE(this.SummaryEntry);
     this.CONSUME(CloseParen);
     return expValue;
   });
@@ -83,48 +96,106 @@ export class FormulaParser extends EmbeddedActionsParser {
    * @private
    * @memberof FormulaParser
    */
-  private VariableOp = this.RULE('VariableOp', () => {
-    const valMark = this.CONSUME(VariableMark).image;
-    // Operation of value extraction, eg: {self.num_26} -> 1
-    let val = deepGet(this.data, valMark.substring(1, valMark.length - 1));
+  private VariableOp = this.RULE('VariableOp', () => this.OR([
+    { ALT: () => {
+      const valMark = this.CONSUME(VariableMark).image;
+      // Operation of value extraction, eg: {self.num_26} -> 1
+      return deepGet(this.data, valMark.substring(1, valMark.length - 1));
+    } },
+    { ALT: () => parseInt(this.CONSUME(NumberMark).image, 10) },
+    { ALT: () => {
+      const string = this.CONSUME(StringMark).image;
+      // Clear string's single and double quotation marks, eg: 'a' + 'a' =>  'aa'
+      return string.substring(1, string.length - 1);
+    } },
+    { ALT: () => this.SUBRULE(this.ArrayOp) },
+  ]));
+
+  /**
+   * Compare Expression, support: > | < | >= | <= | == | !=
+   */
+  private CompareExpression = this.RULE('CompareExpression', () => {
+    // TODO: Fix the value type.
+    let leftValue: number | string | boolean, op, rightValue: number | string;
+    leftValue = this.SUBRULE(this.AddExpression);
+    console.log(leftValue)
     this.MANY(() => {
-      const op = this.CONSUME(SeatMark);
-      const rightVal = this.SUBRULE2(this.SummaryExpression);
-      val = NumberUtils(val, op, rightVal);
+      op = this.CONSUME(CompareSeatMark);
+      rightValue = this.SUBRULE1(this.AddExpression);
+      if (tokenMatcher(op, GtMark)) {
+        leftValue = leftValue > rightValue;
+      } else if (tokenMatcher(op, LtMark)) {
+        leftValue = leftValue < rightValue;
+      } else if (tokenMatcher(op, GteMark)) {
+        leftValue = leftValue >= rightValue;
+      } else if (tokenMatcher(op, LteMark)) {
+        leftValue = leftValue <= rightValue;
+      } else if (tokenMatcher(op, EqualMark)) {
+        leftValue = leftValue == rightValue;
+      } else if (tokenMatcher(op, UnEqualMark)) {
+        leftValue = leftValue != rightValue;
+      }
     });
-    return val;
+    return leftValue;
+  })
+  /**
+   * Add and Sub Expression, eg: number - number | number + number
+   */
+  private AddExpression = this.RULE('AddExpression', () => {
+    let leftValue: any, op: IToken, rightValue: any;
+    leftValue = this.SUBRULE(this.MutExpression);
+    this.MANY(() => {
+      op = this.CONSUME(AddSubSeatMark);
+      rightValue = this.SUBRULE1(this.MutExpression);
+      if (tokenMatcher(op, AddMark)) {
+        leftValue += rightValue;
+      } else {
+        leftValue -= rightValue;
+      }
+    });
+    return leftValue;
   });
 
   /**
-   * Number Expression
-   * @desc eg: number ( + number )
-   * @private
-   * @memberof FormulaParser
+   * Multiplication and Division Expression, eg: number / number | number * number
    */
-  private NumberOp = this.RULE('NumberOp', () => {
-    let leftValue: number, op, rightValue;
-    leftValue = parseInt(this.CONSUME(NumberMark).image, 10);
+  private MutExpression = this.RULE('MutExpression', () => {
+    let leftValue: any, op, rightValue: any;
+    leftValue = this.SUBRULE(this.AtomicExpression);
+    // leftValue = parseInt(this.CONSUME(NumberMark).image, 10);
     this.MANY(() => {
-      // 运算符的情况
-      op = this.CONSUME(SeatMark);
-      // 运算符右侧的值
-      rightValue = this.SUBRULE2(this.SummaryExpression);
-      leftValue = NumberUtils(leftValue, op, rightValue);
+      op = this.CONSUME(MutDivSeatMark);
+      rightValue = this.SUBRULE2(this.AtomicExpression);
+      if (tokenMatcher(op, MutMark)) {
+        leftValue *= rightValue;
+      } else {
+        leftValue /= rightValue;
+      }
     });
-    // console.log('NumberOpReturn', { leftValue, op, rightValue })
     return leftValue;
   });
+
+  /**
+   * Atomic Expression, eg: (1 + 2) * 1 | SUM(1+2) | var + var
+   */
+  private AtomicExpression = this.RULE('AtomicExpression', () => this.OR([
+    // parenthesisExpression has the highest precedence and thus it
+    // appears in the "lowest" leaf in the expression ParseTree.
+    {ALT: () => this.SUBRULE(this.ParenthesisExpression)},
+    {ALT: () => this.SUBRULE(this.VariableOp)},
+    {ALT: () => this.SUBRULE(this.FunctionOp)}
+  ]))
 
   /**
    * Array Expression just like variable, but we need to parse it, because image will return as string, not array
    * @private
    * @memberof FormulaParser
    */
-  private ArrayOp = this.RULE('Array', () => {
-    const ArrayData = this.CONSUME(ArrayMark)
+  private ArrayOp = this.RULE('ArrayOp', () => {
+    const ArrayData = this.CONSUME(ArrayMark);
     // Use ACTION can let JSON.parse be safe.detail: https://chevrotain.io/docs/guide/internals.html#assumption-1-the-parser-won-t-throw-errors-during-recording
     return this.ACTION(() => {
-      return JSON.parse(ArrayData.image)
-    })
-  })
+      return JSON.parse(ArrayData.image);
+    });
+  });
 }

@@ -4,12 +4,23 @@
   "description": "a formula realize",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf -rf lib esm dist && npm run build:cjs&&npm run build:esm&&npm run build:umd",
+    "build:cjs": "tsc --project tsconfig.json --outDir lib",
+    "build:esm": "tsc --project tsconfig.json --module es2015 --outDir esm",
+    "build:umd": "rollup --config"
   },
   "author": "Hansuku(www.hansuku.com)",
   "license": "ISC",
   "dependencies": {
-    "chevrotain": "^10.1.2",
+    "chevrotain": "^10.1.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^22.0.1",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.75.7",
+    "rollup-plugin-typescript2": "^0.32.1",
     "typescript": "^4.7.4"
   }
 }

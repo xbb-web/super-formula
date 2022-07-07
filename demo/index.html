@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo</title>
+  <style type="text/css">
+    .textarea {
+      width: 500px;
+      height: 200px;
+    }
+  </style>
+  <script>
+    var parcelRequire;
+  </script>
+  <script src="./index.js" type="module"></script>
+</head>
+<body>
+  <p>Input:</p>
+  <textarea id="input" class="textarea" onchange="onTextChange('input')"></textarea>
+  <p>WithData:</p>
+  <textarea id="data" class="textarea" onchange="onTextChange('data')"></textarea>
+  <p><button id="exec">exec</button></p>
+  <p>Output:</p>
+  <textarea id="output" class="textarea" onchange="onTextChange('output')"></textarea>
+</body>
+</html>

@@ -1,4 +1,4 @@
-import { isNumber, flatten } from '../utils'
+import { isNumber, flatten } from '../utils/index';
 
 export const NumberFunctions = {
   'SUM(': function() {
