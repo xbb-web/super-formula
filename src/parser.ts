@@ -118,7 +118,6 @@ export class FormulaParser extends EmbeddedActionsParser {
     // TODO: Fix the value type.
     let leftValue: number | string | boolean, op, rightValue: number | string;
     leftValue = this.SUBRULE(this.AddExpression);
-    console.log(leftValue)
     this.MANY(() => {
       op = this.CONSUME(CompareSeatMark);
       rightValue = this.SUBRULE1(this.AddExpression);

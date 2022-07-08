@@ -1,19 +1,25 @@
-import { isNumber, flatten } from '../utils/index';
+import { sum, add, format, subtract, multiply, divide, abs, MathType, arg, } from 'mathjs';
 
 export const NumberFunctions = {
   'SUM(': function() {
-    for (
-      var a = 0,
-        b = flatten(arguments, function(a: any) {
-          return isNumber(a);
-        }),
-        c = 0,
-        d = b.length;
-      c < d;
-      ++c
-    ) {
-      a += +b[c];
-    }
-    return a;
+    return sum(...arguments)
   },
+  'ADD(': function(num1: MathType, num2: MathType, n?: number): MathType | string {
+    return format(add(num1, num2), n)
+  },
+  'SUBTRACT(': function(num1: MathType, num2: MathType, n?: number): MathType | string {
+    return format(subtract(num1, num2), n)
+  },
+  'MULTIPLY(': function(num1: MathType, num2: MathType, n?: number): MathType | string {
+    return format(multiply(num1, num2), n)
+  },
+  'DIVIDE(': function(num1: MathType, num2: MathType, n?: number): MathType | string {
+    return format(divide(num1, num2), n)
+  },
+  'ABS(': function(num: number): number {
+    return abs(num)
+  },
+  'AVERAGE(': function() {
+    return sum(...arguments) / [...arguments].length
+  }
 };

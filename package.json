@@ -13,7 +13,8 @@
   "author": "Hansuku(www.hansuku.com)",
   "license": "ISC",
   "dependencies": {
-    "chevrotain": "^10.1.2"
+    "chevrotain": "^10.1.2",
+    "mathjs": "^10.6.4"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.1",
