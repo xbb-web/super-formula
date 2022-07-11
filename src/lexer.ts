@@ -135,13 +135,13 @@ export const VariableMark = createToken({
  */
 export const NumberMark = createToken({
   name: 'NumberMark',
-  pattern: /\d+/,
+  pattern: /-?\d*\.?\d+/,
   categories: VariableSeatMark
 });
 
 export const StringMark = createToken({
   name: 'StringMark',
-  pattern: /["|'][\u4e00-\u9fa5a-zA-Z0-9]+["|']/,
+  pattern: /["|'][\u4e00-\u9fa5a-zA-Z0-9=><!']+["|']/,
   categories: VariableSeatMark
 })
 
@@ -174,7 +174,7 @@ export const CloseParen = createToken({
 
 export const ArrayMark = createToken({
   name: 'ArrayMark',
-  pattern: /\[.+\]/,
+  pattern: /\[.*?\]/,
 })
 
 /** 

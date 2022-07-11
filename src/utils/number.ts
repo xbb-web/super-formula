@@ -31,21 +31,3 @@ export const flatten = function(a, b, c?) {
     return '0'
   }
 }
-
-function formatNumber(num1: number | string, num2: number | string): FormatObj {
-  let r1: number
-  let r2: number
-  try {
-    r1 = toNonExponential(num1).toString().split('.')[1].length
-  } catch (e) {
-    r1 = 0
-  }
-  try {
-    r2 = toNonExponential(num2).toString().split('.')[1].length
-  } catch (e) {
-    r2 = 0
-  }
-  const sum: number = r1 + r2
-  const sub: number = r2 - r1
-  return { max: Math.pow(10, Math.max(r1, r2)), sum: Math.pow(10, sum), sub: Math.pow(10, sub) }
-}

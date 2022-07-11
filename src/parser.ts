@@ -70,9 +70,10 @@ export class FormulaParser extends EmbeddedActionsParser {
         params.push(subParams);
       },
     });
+    console.log(functionName, params)
     this.CONSUME2(CloseParen);
     return (
-      FunctionSummary[functionName] && FunctionSummary[functionName](params)
+      FunctionSummary[functionName] && FunctionSummary[functionName](...params)
     );
   });
 
@@ -98,16 +99,17 @@ export class FormulaParser extends EmbeddedActionsParser {
    */
   private VariableOp = this.RULE('VariableOp', () => this.OR([
     { ALT: () => {
+      const string = this.CONSUME(StringMark).image;
+      console.log(string)
+      // Clear string's single and double quotation marks, eg: 'a' + 'a' =>  'aa'
+      return string.substring(1, string.length - 1);
+    } },
+    { ALT: () => {
       const valMark = this.CONSUME(VariableMark).image;
       // Operation of value extraction, eg: {self.num_26} -> 1
       return deepGet(this.data, valMark.substring(1, valMark.length - 1));
     } },
-    { ALT: () => parseInt(this.CONSUME(NumberMark).image, 10) },
-    { ALT: () => {
-      const string = this.CONSUME(StringMark).image;
-      // Clear string's single and double quotation marks, eg: 'a' + 'a' =>  'aa'
-      return string.substring(1, string.length - 1);
-    } },
+    { ALT: () => Number(this.CONSUME(NumberMark).image) },
     { ALT: () => this.SUBRULE(this.ArrayOp) },
   ]));
 
@@ -192,6 +194,7 @@ export class FormulaParser extends EmbeddedActionsParser {
    */
   private ArrayOp = this.RULE('ArrayOp', () => {
     const ArrayData = this.CONSUME(ArrayMark);
+    console.log(ArrayData)
     // Use ACTION can let JSON.parse be safe.detail: https://chevrotain.io/docs/guide/internals.html#assumption-1-the-parser-won-t-throw-errors-during-recording
     return this.ACTION(() => {
       return JSON.parse(ArrayData.image);
