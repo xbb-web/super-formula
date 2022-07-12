@@ -26,41 +26,37 @@ import {
 } from 'mathjs';
 
 export const NumberFunctions = {
-  'ADD(': function(
-    num1: MathType,
-    num2: MathType,
-    n?: number,
-  ): MathType | string {
+  ADD: function(num1: MathType, num2: MathType, n?: number): MathType | string {
     return format(add(num1, num2), n);
   },
-  'SUBTRACT(': function(
+  SUBTRACT: function(
     num1: MathType,
     num2: MathType,
     n?: number,
   ): MathType | string {
     return format(subtract(num1, num2), n);
   },
-  'MULTIPLY(': function(
+  MULTIPLY: function(
     num1: MathType,
     num2: MathType,
     n?: number,
   ): MathType | string {
     return format(multiply(num1, num2), n);
   },
-  'DIVIDE(': function(
+  DIVIDE: function(
     num1: MathType,
     num2: MathType,
     n?: number,
   ): MathType | string {
     return format(divide(num1, num2), n);
   },
-  'ABS(': function(num: number): number {
+  ABS: function(num: number): number {
     return abs(num);
   },
-  'AVERAGE(': function(...arr: Array<number | BigNumber | Fraction>) {
+  AVERAGE: function(...arr: Array<number | BigNumber | Fraction>) {
     return sum(...arr) / [...arr].length;
   },
-  'CEILING(': function(num1: number, num2: number) {
+  CEILING: function(num1: number, num2: number) {
     // TODO: Fix the variable name
     if (num2 === 0) {
       return 0;
@@ -76,10 +72,10 @@ export const NumberFunctions = {
       ? -round(floor(abs(num1) / num2) * num2, e)
       : -round(ceil(abs(num1) / num2) * num2, e);
   },
-  'COUNT(': function(...arr: MathType[]) {
+  COUNT: function(...arr: MathType[]) {
     return count([...arr]);
   },
-  'COUNTIF(': function(array: Array<any>, criteria: string) {
+  COUNTIF: function(array: Array<any>, criteria: string) {
     /[<>=!]/.test(criteria) || (criteria = '=="' + criteria + '"');
     let matches;
     for (let args = flatten(array), matches = 0, i = 0; i < args.length; i++) {
@@ -89,7 +85,7 @@ export const NumberFunctions = {
     }
     return matches;
   },
-  'SUMIF(': function(array: Array<any>, criteria: string) {
+  SUMIF: function(array: Array<any>, criteria: string) {
     /[<>=!]/.test(criteria) || (criteria = '=="' + criteria + '"');
     const args = flatten(array);
     let matches = 0;
@@ -106,13 +102,13 @@ export const NumberFunctions = {
     }
     return matches;
   },
-  'FIXED(': function(source: number, digits: number) {
+  FIXED: function(source: number, digits: number) {
     digits = void 0 === digits ? 0 : digits;
     return isNumber(digits) && digits >= 0
       ? Number(source).toFixed(digits)
       : '';
   },
-  'FLOOR(': function(source: number, digits: number) {
+  FLOOR: function(source: number, digits: number) {
     // TODO: Fix the variable name
     if (digits === 0) {
       return 0;
@@ -128,53 +124,53 @@ export const NumberFunctions = {
       ? round(floor(source / digits) * digits, d)
       : -round(floor(abs(source) / digits) * digits, d);
   },
-  'INT(': function(number: number) {
+  INT: function(number: number) {
     return isNumber(number) ? floor(number) : 0;
   },
-  'RAND(': function() {
+  RAND: function() {
     return Math.random();
   },
-  'LARGE(': function(a: Array<number>, b: number) {
+  LARGE: function(a: Array<number>, b: number) {
     let arr = [].sort.call(a, (a, b) => {
       return b - a;
     });
     return arr[b - 1];
   },
-  'LOG(': function(number: number, base: number) {
+  LOG: function(number: number, base: number) {
     if (number === undefined || base === undefined) return;
     return isNumber(base) ? log(number, base) : 0;
   },
-  'MAX(': function(...args: MathType[]) {
+  MAX: function(...args: MathType[]) {
     return max(...args);
   },
-  'MIN(': function(...args: MathType[]) {
+  MIN: function(...args: MathType[]) {
     return min(...args);
   },
-  'MOD(': function<T extends number | BigNumber | Fraction | MathCollection>(
+  MOD: function<T extends number | BigNumber | Fraction | MathCollection>(
     dividend: T,
     divisor: number | BigNumber | Fraction | MathCollection,
   ) {
     return mod(dividend, divisor);
   },
-  'POWER(': function(base: number, exponent: number) {
+  POWER: function(base: number, exponent: number) {
     return pow(base, exponent);
   },
-  'PRODUCT(': function(...args: MathType[]): number | undefined {
+  PRODUCT: function(...args: MathType[]): number | undefined {
     return prod(...args);
   },
-  'ROUND(': function(number: number, base: number) {
+  ROUND: function(number: number, base: number) {
     return round(number, base);
   },
-  'ROUNDUP(': function(number: number, decimals: number) {
+  ROUNDUP: function(number: number, decimals: number) {
     return ceil(number, decimals);
   },
-  'ROUNDDOWN(': function(number: number, decimals: number) {
+  ROUNDDOWN: function(number: number, decimals: number) {
     return floor(number, decimals);
   },
-  'SQRT(': function(number: number): number {
+  SQRT: function(number: number): number {
     return sqrt(number);
   },
-  'CONDITION_SUM(': function(
+  CONDITION_SUM: function(
     conditions: Array<any>,
     exp: string,
     values: Array<any>,
@@ -188,10 +184,10 @@ export const NumberFunctions = {
     });
     return sum;
   },
-  'SUM(': function(...arr: Array<number | BigNumber | Fraction>) {
+  SUM: function(...arr: Array<number | BigNumber | Fraction>) {
     return sum(...arr);
   },
-  'SUMPRODUCT(': function() {
+  SUMPRODUCT: function() {
     // TODO: Performance testing and optimization writing
     for (
       var a = 0, b = [], c = -1, d = 0;

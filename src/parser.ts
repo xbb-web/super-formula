@@ -25,18 +25,20 @@ import {
   LteMark,
   EqualMark,
   UnEqualMark,
-  StringMark
+  StringMark,
 } from './lexer';
 import { deepGet } from './utils';
 import { FunctionSummary } from './function';
 
 export class FormulaParser extends EmbeddedActionsParser {
   private data?: Record<string | number | symbol, any>;
-  constructor(private _data?: Record<string | number | symbol, any>) {
+  private SummaryFunction: Record<string, Function>
+  constructor(private _data?: Record<string | number | symbol, any>, private customFunction?: Record<string, Function>) {
     super(TokenVocabulary);
     this.data = _data;
     this.expression();
     this.performSelfAnalysis();
+    this.SummaryFunction = {...FunctionSummary, ...customFunction}
   }
 
   public changeCustomData = (
@@ -50,9 +52,9 @@ export class FormulaParser extends EmbeddedActionsParser {
   };
   /** General Rule */
   private SummaryEntry: ParserMethod<unknown[], unknown> = () => {
-    return this.RULE('SummaryEntry', () => 
-      this.SUBRULE(this.CompareExpression)
-    )
+    return this.RULE('SummaryEntry', () =>
+      this.SUBRULE(this.CompareExpression),
+    );
   };
   /**
    * Function expressions
@@ -60,7 +62,8 @@ export class FormulaParser extends EmbeddedActionsParser {
    * @memberof FormulaParser
    */
   private FunctionOp = this.RULE('FunctionOp', () => {
-    const functionName = this.CONSUME(FunctionMark).image;
+    let functionName = this.CONSUME(FunctionMark).image;
+    functionName = functionName.substr(0, functionName.length - 1);
     // const firstParams = this.SUBRULE(this.SummaryEntry);
     const params: Array<any> = [];
     this.MANY_SEP({
@@ -70,11 +73,10 @@ export class FormulaParser extends EmbeddedActionsParser {
         params.push(subParams);
       },
     });
-    console.log(functionName, params)
     this.CONSUME2(CloseParen);
-    return (
-      FunctionSummary[functionName] && FunctionSummary[functionName](...params)
-    );
+    return this.ACTION(() => {
+      return this.SummaryFunction[functionName] && this.SummaryFunction[functionName](...params)
+    });
   });
 
   /**
@@ -97,21 +99,27 @@ export class FormulaParser extends EmbeddedActionsParser {
    * @private
    * @memberof FormulaParser
    */
-  private VariableOp = this.RULE('VariableOp', () => this.OR([
-    { ALT: () => {
-      const string = this.CONSUME(StringMark).image;
-      console.log(string)
-      // Clear string's single and double quotation marks, eg: 'a' + 'a' =>  'aa'
-      return string.substring(1, string.length - 1);
-    } },
-    { ALT: () => {
-      const valMark = this.CONSUME(VariableMark).image;
-      // Operation of value extraction, eg: {self.num_26} -> 1
-      return deepGet(this.data, valMark.substring(1, valMark.length - 1));
-    } },
-    { ALT: () => Number(this.CONSUME(NumberMark).image) },
-    { ALT: () => this.SUBRULE(this.ArrayOp) },
-  ]));
+  private VariableOp = this.RULE('VariableOp', () =>
+    this.OR([
+      {
+        ALT: () => {
+          const string = this.CONSUME(StringMark).image;
+          console.log(string);
+          // Clear string's single and double quotation marks, eg: 'a' + 'a' =>  'aa'
+          return string.substring(1, string.length - 1);
+        },
+      },
+      {
+        ALT: () => {
+          const valMark = this.CONSUME(VariableMark).image;
+          // Operation of value extraction, eg: {self.num_26} -> 1
+          return deepGet(this.data, valMark.substring(1, valMark.length - 1));
+        },
+      },
+      { ALT: () => Number(this.CONSUME(NumberMark).image) },
+      { ALT: () => this.SUBRULE(this.ArrayOp) },
+    ]),
+  );
 
   /**
    * Compare Expression, support: > | < | >= | <= | == | !=
@@ -138,7 +146,7 @@ export class FormulaParser extends EmbeddedActionsParser {
       }
     });
     return leftValue;
-  })
+  });
   /**
    * Add and Sub Expression, eg: number - number | number + number
    */
@@ -179,13 +187,15 @@ export class FormulaParser extends EmbeddedActionsParser {
   /**
    * Atomic Expression, eg: (1 + 2) * 1 | SUM(1+2) | var + var
    */
-  private AtomicExpression = this.RULE('AtomicExpression', () => this.OR([
-    // parenthesisExpression has the highest precedence and thus it
-    // appears in the "lowest" leaf in the expression ParseTree.
-    {ALT: () => this.SUBRULE(this.ParenthesisExpression)},
-    {ALT: () => this.SUBRULE(this.VariableOp)},
-    {ALT: () => this.SUBRULE(this.FunctionOp)}
-  ]))
+  private AtomicExpression = this.RULE('AtomicExpression', () =>
+    this.OR([
+      // parenthesisExpression has the highest precedence and thus it
+      // appears in the "lowest" leaf in the expression ParseTree.
+      { ALT: () => this.SUBRULE(this.ParenthesisExpression) },
+      { ALT: () => this.SUBRULE(this.VariableOp) },
+      { ALT: () => this.SUBRULE(this.FunctionOp) },
+    ]),
+  );
 
   /**
    * Array Expression just like variable, but we need to parse it, because image will return as string, not array
@@ -194,7 +204,7 @@ export class FormulaParser extends EmbeddedActionsParser {
    */
   private ArrayOp = this.RULE('ArrayOp', () => {
     const ArrayData = this.CONSUME(ArrayMark);
-    console.log(ArrayData)
+    console.log(ArrayData);
     // Use ACTION can let JSON.parse be safe.detail: https://chevrotain.io/docs/guide/internals.html#assumption-1-the-parser-won-t-throw-errors-during-recording
     return this.ACTION(() => {
       return JSON.parse(ArrayData.image);

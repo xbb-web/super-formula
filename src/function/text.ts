@@ -17,65 +17,65 @@ const isObjectEmpty = function(a: any) {
 };
 
 export const TextFunctions = {
-  'JOIN(': (params: Array<any>, split: string) => params.join(split),
-  'CONCATENATE(': function(...args: Array<string>) {
+  JOIN: (params: Array<any>, split: string) => params.join(split),
+  CONCATENATE: function(...args: Array<string>) {
     let res = '';
     [...args].forEach((item = '') => {
       res += item;
     });
     return res;
   },
-  'EXACT(': function(text_1: string, text_2: string) {
+  EXACT: function(text_1: string, text_2: string) {
     return text_1 === text_2;
   },
-  'ISEMPTY(': function(target: any) {
+  ISEMPTY: function(target: any) {
     return isObjectEmpty(target);
   },
-  'LEFT(': function(text = '', slice: number) {
+  LEFT: function(text = '', slice: number) {
     return ''.substr.call(text, 0, slice);
   },
-  'LEN(': function(text: string) {
+  LEN: function(text: string) {
     return text.length;
   },
-  'LOWER(': function (text: string = '') {
-    return text.toLocaleLowerCase()
+  LOWER: function(text: string = '') {
+    return text.toLocaleLowerCase();
   },
-  'MID(': function(text: string, start: number, end: number) {
-    return text.slice(start - 1, start + end - 1)
+  MID: function(text: string, start: number, end: number) {
+    return text.slice(start - 1, start + end - 1);
   },
-  'REPLACE(': function(text = '', start: number, end: number, target: string) {
-    let arr = text.split('')
-    arr.splice(start - 1, end, target)
-    return arr.join('')
+  REPLACE: function(text = '', start: number, end: number, target: string) {
+    let arr = text.split('');
+    arr.splice(start - 1, end, target);
+    return arr.join('');
   },
-  'REPT': function(text: string, times: number) {
-    let str = ''
+  REPT: function(text: string, times: number) {
+    let str = '';
     for (let i = 0; i < times; i++) {
-      str += text
+      str += text;
     }
-    return str
+    return str;
   },
-  'RIGHT(': function(text = '', lens: number) {
-    return text.substr(-lens)
+  RIGHT: function(text = '', lens: number) {
+    return text.substr(-lens);
   },
-  'SEARCH(': function(text1 = '', text2 = '') {
-    return text2.indexOf(text1) + 1
+  SEARCH: function(text1 = '', text2 = '') {
+    return text2.indexOf(text1) + 1;
   },
-  'SPLIT(': function (text = '', split = '') {
-    return text.split(split)
+  SPLIT: function(text = '', split = '') {
+    return text.split(split);
   },
   // TODO: check full function
-  'TEXT(': function(number: number) {
-    return String(number)
+  TEXT: function(number: number) {
+    return String(number);
   },
-  'TRIM(': function(text = '') {
-    return text.trim().replace(/\s+/g, '')
+  TRIM: function(text = '') {
+    return text.trim().replace(/\s+/g, '');
   },
-  'UPPER(': function(text = '') {
-    return text.toLocaleUpperCase()
+  UPPER: function(text = '') {
+    return text.toLocaleUpperCase();
   },
   // TODO: Type check
-  'VALUE(': function(text = '') {
-    return Number(text)
-  }
+  VALUE: function(text = '') {
+    return Number(text);
+  },
 };
