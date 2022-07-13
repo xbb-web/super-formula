@@ -1,3 +1,4 @@
+// @ts-ignore
 import {
   sum,
   add,
@@ -187,24 +188,23 @@ export const NumberFunctions = {
   SUM: function(...arr: Array<number | BigNumber | Fraction>) {
     return sum(...arr);
   },
-  SUMPRODUCT: function() {
+  SUMPRODUCT: function(...args: Array<Array<Array<number>>>) {
     // TODO: Performance testing and optimization writing
-    for (
-      var a = 0, b = [], c = -1, d = 0;
-      d < arguments.length;
-      d++ // eslint-disable-next-line
-    ) {
-      arguments[d] instanceof Array &&
-        ((c = c < 0 ? arguments[d].length : Math.min(arguments[d].length, c)),
-        b.push(arguments[d]));
+    const arr = [...args];
+    let a = 0,
+      b: Array<Array<Array<number>>> = [],
+      c = -1;
+    for (let i = 0; i < arr.length; i++) {
+      arr[i] instanceof Array &&
+        ((c = c < 0 ? arr[i].length : Math.min(arr[i].length, c)),
+        b.push(arr[i]));
     }
-    for (var e, f, g, h = 0; h < c; h++) {
-      for (
-        e = 1, f = 0;
-        f < b.length;
-        f++ // eslint-disable-next-line
-      ) {
-        (g = parseFloat(b[f][h])), isNaN(g) && (g = 0), (e *= g);
+    let e,
+      f,
+      g = 0;
+    for (let i = 0; i < c; i++) {
+      for (e = 1, f = 0; f < b.length; f++) {
+        (g = parseFloat(String(b[f][i]))), isNaN(g) && (g = 0), (e *= g);
       }
       a += e;
     }

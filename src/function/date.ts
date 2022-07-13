@@ -6,12 +6,12 @@ dayjs.extend(isoWeeksInYear);
 dayjs.extend(isLeapYear);
 dayjs.extend(weekOfYear);
 
-const createDayjs = (timestamp: number): dayjs.Dayjs => {
+const createDayjs = (param: number | Date): dayjs.Dayjs => {
   // unix time
-  if (String(timestamp).length === 10) {
-    return dayjs.unix(timestamp);
+  if (typeof param === 'number' && String(param).length === 10) {
+    return dayjs.unix(param);
   } else {
-    return dayjs(timestamp);
+    return dayjs(param);
   }
 };
 
@@ -45,12 +45,14 @@ export const DateFunctions = {
     }
     return date;
   },
-  DATEDELTA: function(a: number, b: number): number {
-    return a + b * (60 * 60 * 24);
+  DATEDELTA: function(timestamp: number, addDay: number): number {
+    return createDayjs(timestamp)
+      .add(addDay, 'day')
+      .valueOf();
   },
   DAY: function(time: number): number | undefined {
     if (time === undefined) return;
-    return createDayjs(time).day();
+    return createDayjs(time).date();
   },
   DAYS: function(start: number, end: number): number | undefined {
     if (start === undefined || end === undefined) return;
@@ -76,8 +78,8 @@ export const DateFunctions = {
   TIME: function(h: number, m: number, s: number) {
     return (3600 * h + 60 * m + s) / 86400;
   },
-  TIMESTAMP: function(a: Date | number) {
-    return Number(a) / 1000;
+  TIMESTAMP: function(a: Date) {
+    return createDayjs(a).valueOf();
   },
   NOW: function() {
     return parseInt(String(new Date().getTime()));
@@ -87,23 +89,25 @@ export const DateFunctions = {
     const startTime = createDayjs(start);
     const endTime = createDayjs(end);
     if (!year) return startTime.diff(endTime.format('YYYY-MM-DD'), 'day');
-    let minTime = +start - +end > 0 ? +end : +end;
-    let maxTime = +start - +end > 0 ? +end : +end;
+    let minTime = +start - +end > 0 ? +end : +start;
+    let maxTime = +start - +end > 0 ? +start : +end;
     // the year's first day
     let preDate =
       String(start).length === 10
-        ? dayjs(`${year}-1-1 00:00:00`).unix()
-        : dayjs(`${year}-1-1 00:00:00`);
+        ? parseInt(String(dayjs(`${year}-1-1 00:00:00`).unix()))
+        : parseInt(String(dayjs(`${year}-1-1 00:00:00`).valueOf()));
     // the year's last day
     let nextDate =
       String(start).length === 10
-        ? dayjs(`${year}-12-12 23:59:59`).unix()
-        : dayjs(`${year}-12-12 23:59:59`);
+        ? parseInt(String(dayjs(`${year + 1}-01-01 00:00:00`).unix())) -
+          60 * 60 * 24
+        : parseInt(String(dayjs(`${year + 1}-01-01 00:00:00`).valueOf())) -
+          60 * 60 * 24;
     if (minTime > nextDate || maxTime < preDate) {
       return 0;
     }
     let arr = [minTime, maxTime, preDate, nextDate].sort();
-    return (Number(arr[2]) - Number(arr[1])) / (1 * 60 * 60 * 24);
+    return parseInt(String((Number(arr[2]) - Number(arr[1])) / (1 * 60 * 60 * 24)));
   },
   TODAY: function() {
     return new Date().getTime();

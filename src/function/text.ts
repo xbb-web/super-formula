@@ -28,13 +28,13 @@ export const TextFunctions = {
   EXACT: function(text_1: string, text_2: string) {
     return text_1 === text_2;
   },
-  ISEMPTY: function(target: any) {
+  ISEMPTY: function(target: any): boolean {
     return isObjectEmpty(target);
   },
-  LEFT: function(text = '', slice: number) {
+  LEFT: function(text = '', slice: number): string {
     return ''.substr.call(text, 0, slice);
   },
-  LEN: function(text: string) {
+  LEN: function(text: string): number {
     return text.length;
   },
   LOWER: function(text: string = '') {

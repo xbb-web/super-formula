@@ -7,8 +7,8 @@ export const LogicFunctions = {
   FALSE: function(): boolean {
     return false;
   },
-  IF: (params: Array<[number | boolean, unknown, unknown]>) => {
-    return params[0] ? params[1] : params[2];
+  IF: function(logic: any, params1: any, params2: any) {
+    return new Function(`return ${logic}`)() ? params1 : params2;
   },
   NOT: function(a: number | string | boolean | undefined): boolean {
     return !a;
