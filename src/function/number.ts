@@ -28,7 +28,7 @@ import {
 
 export const NumberFunctions = {
   ADD: function(num1: MathType, num2: MathType, n?: number): MathType | string {
-    return format(add(num1, num2), n);
+    return n ? format(add(num1, num2), n) : add(num1, num2);
   },
   SUBTRACT: function(
     num1: MathType,

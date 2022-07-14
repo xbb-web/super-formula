@@ -125,7 +125,7 @@ export const CommaMark = createToken({
  */
 export const VariableMark = createToken({
   name: 'VariableMark',
-  pattern: /{.*}/,
+  pattern: /{.*?}/,
   categories: VariableSeatMark
 });
 
