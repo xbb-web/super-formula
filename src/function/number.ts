@@ -185,6 +185,7 @@ export const NumberFunctions = {
     });
     return sum;
   },
+  // TODO: the sum not support like: SUM([1,2,3,4,[1,2,3,4]])，SUM([1,2,3,4],1)
   SUM: function(...arr: Array<number | BigNumber | Fraction>) {
     return sum(...arr);
   },

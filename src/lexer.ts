@@ -62,7 +62,7 @@ export const EqualMark = createToken({
 
 /**
  * EqualMark
- * @desc eg: a == b
+ * @desc eg: a != b
  */
  export const UnEqualMark = createToken({
   name: 'UnEqualMark',
@@ -121,7 +121,7 @@ export const CommaMark = createToken({
 
 /**
  * VariableMark
- * @desc Variable analysis, default rule is self.keyName, you can re-registration for input.
+ * @desc Variable analysis, Extract values from objects
  */
 export const VariableMark = createToken({
   name: 'VariableMark',
@@ -147,7 +147,7 @@ export const StringMark = createToken({
 
 /**
  * FunctionMark
- * @desc work for Function CONSUME
+ * @desc work for Function CONSUME, PS: it need register before StartParen, because they have a parcel relationship
  */
 export const FunctionMark = createToken({
   name: 'Function',
