@@ -1,2 +1,2 @@
-export * from './number'
-export * from './value'
+export * from './number';
+export * from './value';

@@ -1,6 +1,19 @@
 import { Formula } from '../src'
+import { createSyntaxDiagramsCode } from 'chevrotain'
 
-const formula = new Formula()
+const formula = new Formula({
+  customFunction: {
+    'UUID': function() {
+      return '1273812789dsa8912387as8d6781'
+    },
+    'GETUSERNAME': function() {
+      return ['test']
+    },
+    'TODAY': function() {
+      return parseInt(new Date().getTime() / 1000, 10)
+    }
+  }
+})
 
 window.onload = () => {
   const inputCache = localStorage.getItem('input')
@@ -11,6 +24,12 @@ window.onload = () => {
   if (dataCache) {
     document.getElementById('data').value = dataCache
   }
+
+  const serialziedGrammar = formula.parserInstant.getSerializedGastProductions()
+  const htmlText = createSyntaxDiagramsCode(serialziedGrammar)
+  const innerFrame = document.getElementById("innerFrame")
+  
+  innerFrame.src = 'data:text/html;charset=utf-8,' + encodeURI(htmlText);
 }
 
 window.onTextChange = (type) => {

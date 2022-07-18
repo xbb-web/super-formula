@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,6 +17,7 @@
   </script>
   <script src="./index.js" type="module"></script>
 </head>
+
 <body>
   <p>Input:</p>
   <textarea id="input" class="textarea" onchange="onTextChange('input')"></textarea>
@@ -24,5 +26,18 @@
   <p><button id="exec">exec</button></p>
   <p>Output:</p>
   <textarea id="output" class="textarea" onchange="onTextChange('output')"></textarea>
+  <iframe id="innerFrame" style="
+        position: fixed;
+        top:0px;
+        right:0px;
+        width: calc(100% - 600px);
+        height:100%;
+        border:none;
+        margin:0;
+        padding:0;
+        overflow:hidden;
+        z-index:999999;">
+  </iframe>
 </body>
+
 </html>

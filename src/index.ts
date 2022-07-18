@@ -4,12 +4,13 @@ import { createSyntaxDiagramsCode } from 'chevrotain'
 
 export class Formula {
   public parserInstant: FormulaParser
-  constructor(_data?: Record<string | number | symbol, any>) {
-    this.parserInstant = new FormulaParser(_data)
+  public customFunction: Record<string, Function>
+  constructor({ data = {}, customFunction = {} }) {
+    this.customFunction = customFunction
+    this.parserInstant = new FormulaParser(data, customFunction)
   }
   exec(string: string, _data?: Record<string | number | symbol, any>) {
     const result = FormulaLexer.tokenize(string)
-    console.log(result)
     this.parserInstant.changeCustomData(_data)
     this.parserInstant.input = result.tokens
     const cst = this.parserInstant.expression()

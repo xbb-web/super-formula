@@ -62,7 +62,7 @@ export const EqualMark = createToken({
 
 /**
  * EqualMark
- * @desc eg: a == b
+ * @desc eg: a != b
  */
  export const UnEqualMark = createToken({
   name: 'UnEqualMark',
@@ -121,11 +121,11 @@ export const CommaMark = createToken({
 
 /**
  * VariableMark
- * @desc Variable analysis, default rule is self.keyName, you can re-registration for input.
+ * @desc Variable analysis, Extract values from objects
  */
 export const VariableMark = createToken({
   name: 'VariableMark',
-  pattern: /{.*}/,
+  pattern: /{.*?}/,
   categories: VariableSeatMark
 });
 
@@ -135,19 +135,19 @@ export const VariableMark = createToken({
  */
 export const NumberMark = createToken({
   name: 'NumberMark',
-  pattern: /\d+/,
+  pattern: /-?\d*\.?\d+/,
   categories: VariableSeatMark
 });
 
 export const StringMark = createToken({
   name: 'StringMark',
-  pattern: /["|'][\u4e00-\u9fa5a-zA-Z0-9]+["|']/,
+  pattern: /["|'][\u4e00-\u9fa5a-zA-Z0-9=><!']+["|']/,
   categories: VariableSeatMark
 })
 
 /**
  * FunctionMark
- * @desc work for Function CONSUME
+ * @desc work for Function CONSUME, PS: it need register before StartParen, because they have a parcel relationship
  */
 export const FunctionMark = createToken({
   name: 'Function',
@@ -174,7 +174,7 @@ export const CloseParen = createToken({
 
 export const ArrayMark = createToken({
   name: 'ArrayMark',
-  pattern: /\[.+\]/,
+  pattern: /\[.*?\]/,
 })
 
 /** 
