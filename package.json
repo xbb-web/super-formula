@@ -1,8 +1,9 @@
 {
   "name": "super-form-formula",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "a formula realize",
   "main": "lib/umd/super-form-formula.umd.js",
+  "types": "lib/types/index.d.ts",
   "scripts": {
     "test": "jest",
     "build": "rimraf -rf lib && npm run build:cjs&&npm run build:esm&&npm run build:umd",
@@ -12,6 +13,13 @@
     "doc": "typedoc"
   },
   "author": "Hansuku(www.hansuku.com)",
+  "bugs": {
+    "url": "https://github.com/xbb-web/super-formula/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xbb-web/super-formula.git"
+  },
   "license": "ISC",
   "dependencies": {
     "chevrotain": "^10.1.2",

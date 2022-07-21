@@ -1,4 +1,4 @@
-# Super-Formula🤓
+# Super-Form-Formula🤓
 > a formula achieve, work with form or excel(todo)
 
 #### Feature💻
