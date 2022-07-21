@@ -1,0 +1,9 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/*"],
+  "entryPointStrategy": "resolve",
+  "exclude": [
+    "**/*+(.spec|.e2e).ts"
+  ],
+  "out": "docs"
+}

@@ -13,7 +13,6 @@ import {
   ceil,
   round,
   pow,
-  count,
   flatten,
   prod,
   sqrt,
@@ -73,8 +72,9 @@ export const NumberFunctions = {
       ? -round(floor(abs(num1) / num2) * num2, e)
       : -round(ceil(abs(num1) / num2) * num2, e);
   },
-  COUNT: function(...arr: MathType[]) {
-    return count([...arr]);
+  COUNT: function(...arr: Array<any>) {
+    return flatten([...arr]).length;
+    // return count([...arr]);
   },
   COUNTIF: function(array: Array<any>, criteria: string) {
     /[<>=!]/.test(criteria) || (criteria = '=="' + criteria + '"');

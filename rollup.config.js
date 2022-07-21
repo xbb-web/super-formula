@@ -5,9 +5,9 @@ import commonjs from '@rollup/plugin-commonjs';
 export default {
   input: 'src/index.ts',
   output: {
-    name: 'super-formula',
+    name: 'super-form-formula',
     format: 'umd',
-    file: 'dist/super-formula.umd.js',
+    file: 'lib/umd/super-form-formula.umd.js',
   },
   plugins: [
     typescript({
@@ -18,6 +18,7 @@ export default {
           declaration: false,
         },
       },
+      useTsconfigDeclarationDir: true
     }),
     resolve(),
     commonjs()

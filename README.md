@@ -4,12 +4,17 @@
 #### Feature💻
 - [x] CST Parser
 - [ ] Concurrent form object(with plugin system)
-- [ ] Full excel like function support
+- [x] Full excel like function support
 - [ ] Unit Test
+- [x] Custom Function Supprot
 
 
 #### Usage🛠
-> Wait for release to marketplace
+Install
+```shell
+npm i super-formula -S
+```
+Use It
 ```javascript
 import { Formula } from 'super-formula'
 
