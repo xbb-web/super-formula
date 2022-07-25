@@ -1,4 +1,3 @@
-// @ts-ignore
 import {
   sum,
   add,
@@ -11,6 +10,7 @@ import {
   log,
   floor,
   ceil,
+  count,
   round,
   pow,
   flatten,
@@ -23,6 +23,7 @@ import {
   MathCollection,
   max,
   min,
+  Complex,
 } from 'mathjs';
 
 export const NumberFunctions = {
@@ -73,8 +74,7 @@ export const NumberFunctions = {
       : -round(ceil(abs(num1) / num2) * num2, e);
   },
   COUNT: function(...arr: Array<any>) {
-    return flatten([...arr]).length;
-    // return count([...arr]);
+    return count([...arr]);
   },
   COUNTIF: function(array: Array<any>, criteria: string) {
     /[<>=!]/.test(criteria) || (criteria = '=="' + criteria + '"');
@@ -168,7 +168,7 @@ export const NumberFunctions = {
   ROUNDDOWN: function(number: number, decimals: number) {
     return floor(number, decimals);
   },
-  SQRT: function(number: number): number {
+  SQRT: function(number: number): number | Complex {
     return sqrt(number);
   },
   CONDITION_SUM: function(
