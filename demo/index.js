@@ -1,4 +1,6 @@
-import { Formula } from '../src'
+import 'regenerator-runtime/runtime'
+import { Formula } from '../src/index.ts'
+// import { Formula }  from '../lib/umd/super-form-formula.umd.js'
 import { createSyntaxDiagramsCode } from 'chevrotain'
 
 const formula = new Formula({
@@ -30,28 +32,29 @@ window.onload = () => {
   const innerFrame = document.getElementById("innerFrame")
   
   innerFrame.src = 'data:text/html;charset=utf-8,' + encodeURI(htmlText);
+
+  document.getElementById('exec').addEventListener('click', () => {
+    const input = document.getElementById('input').value
+    const data = document.getElementById('data').value
+    let formatData
+    try {
+      if (data) formatData = JSON.parse(data)
+    } catch (error) {
+      return alert('data value with:' + error)
+    }
+    console.time()
+    const res = formula.exec(input, formatData)
+    console.timeEnd()
+    document.getElementById('output').value = res
+    console.log(res)
+    // const diagrams = formula.genDiagrams()
+    // console.log(diagrams)
+  })
+  
 }
 
 window.onTextChange = (type) => {
   const val = document.getElementById(type).value
   localStorage.setItem(type, val)
 }
-
-document.getElementById('exec').addEventListener('click', () => {
-  const input = document.getElementById('input').value
-  const data = document.getElementById('data').value
-  let formatData
-  try {
-    if (data) formatData = JSON.parse(data)
-  } catch (error) {
-    return alert('data value with:' + error)
-  }
-  console.time()
-  const res = formula.exec(input, formatData)
-  console.timeEnd()
-  document.getElementById('output').value = res
-  console.log(res)
-  // const diagrams = formula.genDiagrams()
-  // console.log(diagrams)
-})
 
