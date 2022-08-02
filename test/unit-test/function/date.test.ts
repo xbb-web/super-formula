@@ -10,6 +10,7 @@ describe('DateFunction', () => {
     expect(DateFunctions.DATE('2022', '07', '13', '13', '14', '59')).toEqual(
       new Date(2022, 6, 13, 13, 14, 59),
     );
+    expect(DateFunctions.DATE()).toEqual(undefined);
   });
   it('DATEDELTA', () => {
     expect(DateFunctions.DATEDELTA(1657670400000, 30)).toEqual(1660262400000);
@@ -47,15 +48,19 @@ describe('DateFunction', () => {
     );
   });
   it('ONEYEARRANGDAY', () => {
-    // TODO: Add more branch
     expect(
       DateFunctions.ONEYEARRANGDAY(1636416000, 1657324800, '2022'),
     ).toEqual(189);
+    expect(
+      DateFunctions.ONEYEARRANGDAY(1657324800, 1636416000, '2029'),
+    ).toEqual(0);
   });
   it('TODAY', () => {
     jest.useFakeTimers();
     jest.setSystemTime(new Date('2022-07-13 00:00:00'));
-    expect(DateFunctions.TODAY()).toEqual(new Date('2022-07-13 00:00:00').getTime());
+    expect(DateFunctions.TODAY()).toEqual(
+      new Date('2022-07-13 00:00:00').getTime(),
+    );
   });
   it('WEEKDAY', () => {
     expect(DateFunctions.WEEKDAY(1657704045734)).toEqual(13);

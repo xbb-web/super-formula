@@ -26,30 +26,64 @@ import {
   Complex,
 } from 'mathjs';
 
+import { ArrayNumberInner } from '../types'
+
 export const NumberFunctions = {
+  /**
+   * Get the accuracy of the two numbers.
+   * @param {MathType} num1 Number 1
+   * @param {MathType} num2 Number 2
+   * @param {MathType} n Precision
+   * @returns {nubmer} nubmer
+   * @eg ADD(1,2)
+   */
   ADD: function(num1: MathType, num2: MathType, n?: number): MathType | string {
-    return n ? format(add(num1, num2), n) : add(num1, num2);
+    return n ? Number(format(add(num1, num2), n)) : add(num1, num2);
   },
+  /**
+   * Get the exact difference between two numbers.
+   * @param {MathType} num1 Number 1
+   * @param {MathType} num2 Number 2
+   * @param {MathType} n Precision
+   * @returns {nubmer} nubmer
+   * @eg SUBTRACT(1,2)
+   */
   SUBTRACT: function(
     num1: MathType,
     num2: MathType,
     n?: number,
   ): MathType | string {
-    return format(subtract(num1, num2), n);
+    return n ? Number(format(subtract(num1, num2), n)) : subtract(num1, num2);
   },
+  /**
+   * Get the exact product of two numbers.
+   * @param {MathType} num1 Number 1
+   * @param {MathType} num2 Number 2
+   * @param {MathType} n Precision
+   * @returns {nubmer} nubmer
+   * @eg MULTIPLY(1,2)
+   */
   MULTIPLY: function(
     num1: MathType,
     num2: MathType,
     n?: number,
   ): MathType | string {
-    return format(multiply(num1, num2), n);
+    return n ? Number(format(multiply(num1, num2), n)) : multiply(num1, num2);
   },
+  /**
+   * Get the exact quotient of two numbers.
+   * @param {MathType} num1 Number 1
+   * @param {MathType} num2 Number 2
+   * @param {MathType} n Precision
+   * @returns {nubmer} nubmer
+   * @eg DIVIDE(1,2)
+   */
   DIVIDE: function(
     num1: MathType,
     num2: MathType,
     n?: number,
   ): MathType | string {
-    return format(divide(num1, num2), n);
+    return n ? Number(format(divide(num1, num2), n)) : divide(num1, num2);
   },
   ABS: function(num: number): number {
     return abs(num);
@@ -78,27 +112,21 @@ export const NumberFunctions = {
   },
   COUNTIF: function(array: Array<any>, criteria: string) {
     /[<>=!]/.test(criteria) || (criteria = '=="' + criteria + '"');
-    let matches;
-    for (let args = flatten(array), matches = 0, i = 0; i < args.length; i++) {
-      'string' != typeof args[i]
-        ? new Function(`return ${args[i]}${criteria}`)() && matches++
-        : new Function(`return '${args[i]}'${criteria}`)() && matches++;
+    let matches = 0;
+    for (let args = flatten(array), i = 0; i < args.length; i++) {
+      let computCharacters = 'string' !== typeof args[i] ? `return ${args[i]}${criteria}` : `return '${args[i]}'${criteria}`
+      new Function(computCharacters)() && matches++
     }
+    // console.log('喵喵', matches)
     return matches;
   },
-  SUMIF: function(array: Array<any>, criteria: string) {
+  SUMIF: function(array: Array<number>, criteria: string) {
     /[<>=!]/.test(criteria) || (criteria = '=="' + criteria + '"');
     const args = flatten(array);
     let matches = 0;
     for (let i = 0; i < args.length; i++) {
-      if ('string' != typeof args[i]) {
-        if (new Function(`return ${args[i]}${criteria}`)()) {
-          matches += args[i];
-        }
-      } else {
-        if (new Function(`return '${args[i]}'${criteria}`)()) {
-          matches += args[i];
-        }
+      if (new Function(`return ${args[i]}${criteria}`)()) {
+        matches += args[i];
       }
     }
     return matches;
@@ -186,14 +214,14 @@ export const NumberFunctions = {
     return sum;
   },
   // TODO: the sum not support like: SUM([1,2,3,4,[1,2,3,4]])，SUM([1,2,3,4],1)
-  SUM: function(...arr: Array<number | BigNumber | Fraction>) {
+  SUM: function <T extends ArrayNumberInner>(...arr: T) {
     return sum(...arr);
   },
-  SUMPRODUCT: function(...args: Array<Array<Array<number>>>) {
+  SUMPRODUCT: function(...args: Array<Array<Array<number> | number>>) {
     // TODO: Performance testing and optimization writing
     const arr = [...args];
     let a = 0,
-      b: Array<Array<Array<number>>> = [],
+      b: Array<Array<Array<number> | number>> = [],
       c = -1;
     for (let i = 0; i < arr.length; i++) {
       arr[i] instanceof Array &&
