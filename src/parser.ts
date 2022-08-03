@@ -104,7 +104,6 @@ export class FormulaParser extends EmbeddedActionsParser {
       {
         ALT: () => {
           const string = this.CONSUME(StringMark).image;
-          console.log(string);
           // Clear string's single and double quotation marks, eg: 'a' + 'a' =>  'aa'
           return string.substring(1, string.length - 1);
         },
@@ -204,7 +203,6 @@ export class FormulaParser extends EmbeddedActionsParser {
    */
   private ArrayOp = this.RULE('ArrayOp', () => {
     const ArrayData = this.CONSUME(ArrayMark);
-    console.log(ArrayData);
     // Use ACTION can let JSON.parse be safe.detail: https://chevrotain.io/docs/guide/internals.html#assumption-1-the-parser-won-t-throw-errors-during-recording
     return this.ACTION(() => {
       return JSON.parse(ArrayData.image);

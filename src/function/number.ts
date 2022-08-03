@@ -117,7 +117,6 @@ export const NumberFunctions = {
       let computCharacters = 'string' !== typeof args[i] ? `return ${args[i]}${criteria}` : `return '${args[i]}'${criteria}`
       new Function(computCharacters)() && matches++
     }
-    // console.log('喵喵', matches)
     return matches;
   },
   SUMIF: function(array: Array<number>, criteria: string) {
