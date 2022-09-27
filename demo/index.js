@@ -1,4 +1,3 @@
-import 'regenerator-runtime/runtime'
 import { Formula } from '../src/index.ts'
 // import { Formula }  from '../lib/umd/super-form-formula.umd.js'
 import { createSyntaxDiagramsCode } from 'chevrotain'
