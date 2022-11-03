@@ -5,3 +5,11 @@ node_modules
 test
 dist
 docs
+src
+scripts
+rollup.config.js
+tsconfig.json
+typedoc.json
+jest.config.ts
+.parcel-cache
+.vscode
