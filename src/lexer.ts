@@ -141,7 +141,7 @@ export const NumberMark = createToken({
 
 export const StringMark = createToken({
   name: 'StringMark',
-  pattern: /["|'][\u4e00-\u9fa5a-zA-Z0-9=><!']+["|']/,
+  pattern: /["|'][\u4e00-\u9fa5a-zA-Z0-9\uFF00-\uFFEF\u3000-\u303F\uFF01-\uFF5Ea-zA-Z0-9=><!/,!@#$%^&*,.]+["|']/,
   categories: VariableSeatMark
 })
 
@@ -172,9 +172,31 @@ export const CloseParen = createToken({
   pattern: /\)/
 });
 
-export const ArrayMark = createToken({
-  name: 'ArrayMark',
-  pattern: /\[.*?\]/,
+/**
+ * ArrayMark
+ * @desc Whether the parsing is an array
+ */
+// export const ArrayMark = createToken({
+//   name: 'ArrayMark',
+//   pattern: /\[.*?\]/,
+// })
+
+/**
+ * ArrayStartMark
+ * @desc Start tag of the array
+ */
+export const ArrayStartMark = createToken({
+  name: 'ArrayStartMark',
+  pattern: /\[/,
+})
+
+/**
+ * ArrayEndMark
+ * @desc End tag of the array
+ */
+export const ArrayEndMark = createToken({
+  name: 'ArrayEndMark',
+  pattern: /\]/,
 })
 
 /** 
@@ -211,7 +233,9 @@ export const AllLexerToken = [
   NumberMark,
   VariableMark,
   StringMark,
-  ArrayMark
+  // ArrayMark,
+  ArrayStartMark,
+  ArrayEndMark
 ]
 
 export const TokenVocabulary: Record<string, TokenType> = {}
