@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
-import isoWeeksInYear from 'dayjs/plugin/isoWeeksInYear';
+import isoWeek from 'dayjs/plugin/isoWeek';
 import isLeapYear from 'dayjs/plugin/isLeapYear';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
-dayjs.extend(isoWeeksInYear);
+dayjs.extend(isoWeek);
 dayjs.extend(isLeapYear);
 dayjs.extend(weekOfYear);
 
@@ -65,7 +65,7 @@ export const DateFunctions = {
     return createDayjs(timestamp).hour();
   },
   ISOWEEKNUM: function(timestamp: number) {
-    return createDayjs(timestamp).isoWeeksInYear();
+    return createDayjs(timestamp).isoWeek();
   },
   MINUTE: function(timestamp: number) {
     if (timestamp === undefined) return;
