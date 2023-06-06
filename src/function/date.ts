@@ -113,7 +113,7 @@ export const DateFunctions = {
     return new Date().getTime();
   },
   WEEKDAY: function(timestamp: number) {
-    return createDayjs(timestamp).date();
+    return createDayjs(timestamp).day();
   },
   WEEKNUM: function(timestamp: number) {
     return createDayjs(timestamp).week();
