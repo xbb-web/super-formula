@@ -153,7 +153,8 @@ export const NumberFunctions = {
       : -round(floor(abs(source) / digits) * digits, d);
   },
   INT: function(number: number) {
-    return isNumber(number) ? floor(number) : 0;
+    const num = Number(number);
+    return isNumber(num) ? floor(num) : 0;
   },
   RAND: function() {
     return Math.random();
@@ -166,7 +167,8 @@ export const NumberFunctions = {
   },
   LOG: function(number: number, base: number) {
     if (number === undefined || base === undefined) return;
-    return isNumber(base) ? log(number, base) : 0;
+    const num = Number(base);
+    return isNumber(num) ? log(number, num) : 0;
   },
   MAX: function(...args: MathType[]) {
     return max(...args);
