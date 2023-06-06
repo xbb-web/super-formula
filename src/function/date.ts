@@ -73,7 +73,7 @@ export const DateFunctions = {
   },
   MONTH: function(timestamp: number) {
     if (timestamp === undefined) return;
-    return createDayjs(timestamp).month();
+    return createDayjs(timestamp).month() + 1;
   },
   TIME: function(h: number, m: number, s: number) {
     return (3600 * h + 60 * m + s) / 86400;
