@@ -124,8 +124,9 @@ export const NumberFunctions = {
     const args = flatten(array);
     let matches = 0;
     for (let i = 0; i < args.length; i++) {
-      if (new Function(`return ${args[i]}${criteria}`)()) {
-        matches += args[i];
+      let computCharacters = 'string' !== typeof args[i] ? `return ${args[i]}${criteria}` : `return '${args[i]}'${criteria}`
+      if (new Function(computCharacters)()) {
+        matches += Number(args[i]);
       }
     }
     return matches;
