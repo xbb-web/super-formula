@@ -25,13 +25,13 @@ describe('DateFunction', () => {
     expect(DateFunctions.HOUR(1657704045734)).toEqual(17);
   });
   it('ISOWEEKNUM', () => {
-    expect(DateFunctions.ISOWEEKNUM(1657670400000)).toEqual(52);
+    expect(DateFunctions.ISOWEEKNUM(1657670400000)).toEqual(28);
   });
   it('MINUTE', () => {
     expect(DateFunctions.MINUTE(1657709844063)).toEqual(57);
   });
   it('MONTH', () => {
-    expect(DateFunctions.MONTH(1657709844063)).toEqual(6);
+    expect(DateFunctions.MONTH(1657709844063)).toEqual(7);
   });
   it('TIME', () => {
     expect(DateFunctions.TIME(13, 14, 59)).toEqual(0.5520717592592592);
@@ -63,7 +63,7 @@ describe('DateFunction', () => {
     );
   });
   it('WEEKDAY', () => {
-    expect(DateFunctions.WEEKDAY(1657704045734)).toEqual(13);
+    expect(DateFunctions.WEEKDAY(1657704045734)).toEqual(3);
   });
   it('WEEKNUM', () => {
     expect(DateFunctions.WEEKNUM(1657704045734)).toEqual(29);
