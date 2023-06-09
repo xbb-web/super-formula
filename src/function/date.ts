@@ -38,7 +38,7 @@ export const DateFunctions = {
       );
     } else {
       // timestamp
-      if (dateArr[0] === undefined) {
+      if (dateArr[0] === undefined || dateArr[0] === "") {
         return undefined;
       }
       date = createDayjs(Number(dateArr[0])).toDate();
