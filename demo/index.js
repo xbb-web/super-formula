@@ -7,8 +7,9 @@ const formula = new Formula({
     'UUID': function() {
       return '1273812789dsa8912387as8d6781'
     },
-    'GETUSERNAME': function() {
-      return ['test']
+    'GETUSERNAME': function(users) {
+      if(!users || !Array.isArray(users)) return ''
+      return users.map(user=> user.name).join(',')
     },
     'TODAY': function() {
       return parseInt(new Date().getTime() / 1000, 10)
