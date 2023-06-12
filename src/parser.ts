@@ -78,6 +78,7 @@ export class FormulaParser extends EmbeddedActionsParser {
         params.push(subParams);
       },
     });
+    this.CONSUME1(CloseParen);
     return this.ACTION(() => {
       return (
         this.SummaryFunction[functionName] &&
