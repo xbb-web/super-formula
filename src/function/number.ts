@@ -37,7 +37,7 @@ export const NumberFunctions = {
    * @returns {nubmer} nubmer
    * @eg ADD(1,2)
    */
-  ADD: function(num1: MathType, num2: MathType, n?: number): MathType | string {
+  ADD: function(num1: MathType = 0, num2: MathType = 0, n?: number): MathType | string {
     return n ? Number(format(add(num1, num2), n)) : add(num1, num2);
   },
   /**
@@ -49,8 +49,8 @@ export const NumberFunctions = {
    * @eg SUBTRACT(1,2)
    */
   SUBTRACT: function(
-    num1: MathType,
-    num2: MathType,
+    num1: MathType = 0,
+    num2: MathType = 0,
     n?: number,
   ): MathType | string {
     return n ? Number(format(subtract(num1, num2), n)) : subtract(num1, num2);
@@ -64,8 +64,8 @@ export const NumberFunctions = {
    * @eg MULTIPLY(1,2)
    */
   MULTIPLY: function(
-    num1: MathType,
-    num2: MathType,
+    num1: MathType = 0,
+    num2: MathType = 0,
     n?: number,
   ): MathType | string {
     return n ? Number(format(multiply(num1, num2), n)) : multiply(num1, num2);
@@ -79,19 +79,19 @@ export const NumberFunctions = {
    * @eg DIVIDE(1,2)
    */
   DIVIDE: function(
-    num1: MathType,
-    num2: MathType,
+    num1: MathType = 0,
+    num2: MathType = 0,
     n?: number,
   ): MathType | string {
     return n ? Number(format(divide(num1, num2), n)) : divide(num1, num2);
   },
-  ABS: function(num: number): number {
+  ABS: function(num: number = 0): number {
     return abs(num);
   },
   AVERAGE: function(...arr: Array<number | BigNumber | Fraction>) {
     return sum(...arr) / [...arr].length;
   },
-  CEILING: function(num1: number, num2: number) {
+  CEILING: function(num1: number = 0, num2: number = 0) {
     // TODO: Fix the variable name
     if (num2 === 0) {
       return 0;
@@ -153,7 +153,7 @@ export const NumberFunctions = {
       ? round(floor(source / digits) * digits, d)
       : -round(floor(abs(source) / digits) * digits, d);
   },
-  INT: function(number: number) {
+  INT: function(number: number = 0) {
     const num = Number(number);
     return isNumber(num) ? floor(num) : 0;
   },
