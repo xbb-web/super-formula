@@ -46,9 +46,10 @@ export const DateFunctions = {
     return date;
   },
   DATEDELTA: function(timestamp: number, addDay: number): number {
-    return createDayjs(timestamp)
-      .add(addDay, 'day')
-      .valueOf();
+    const len = timestamp.toString().length
+    const returnTime = createDayjs(timestamp).add(addDay, 'day').valueOf()
+    if (len === 13) return returnTime
+    else return Math.floor(returnTime / 1000)
   },
   DAY: function(time: number): number | undefined {
     if (time === undefined) return;
@@ -82,7 +83,7 @@ export const DateFunctions = {
     return createDayjs(a).valueOf();
   },
   NOW: function() {
-    return parseInt(String(new Date().getTime()));
+    return parseInt(String(new Date().getTime() / 1000))
   },
   ONEYEARRANGDAY: function(start: number, end: number, year: string) {
     if (!start || !end) return 0;
