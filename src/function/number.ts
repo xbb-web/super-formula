@@ -172,9 +172,15 @@ export const NumberFunctions = {
     return isNumber(num) ? log(number, num) : 0;
   },
   MAX: function(...args: MathType[]) {
+    if ([...args].length === 0 || ([...args].length === 1 && ([...args][0] === undefined || [...args][0].length === 0))) {
+      return
+    }
     return max(...args);
   },
   MIN: function(...args: MathType[]) {
+    if ([...args].length === 0 || ([...args].length === 1 && ([...args][0] === undefined || [...args][0].length === 0))) {
+      return
+    }
     return min(...args);
   },
   MOD: function<T extends number | BigNumber | Fraction | MathCollection>(
@@ -187,6 +193,9 @@ export const NumberFunctions = {
     return pow(base, exponent);
   },
   PRODUCT: function(...args: MathType[]): number | undefined {
+    if ([...args].length === 0 || ([...args].length === 1 && ([...args][0] === undefined || [...args][0].length === 0))) {
+      return
+    }
     return prod(...args);
   },
   ROUND: function(number: number, base: number) {
@@ -220,6 +229,9 @@ export const NumberFunctions = {
     return sum(...arr);
   },
   SUMPRODUCT: function(...args: Array<Array<Array<number> | number>>) {
+    if ([...args].length === 0 || ([...args].length === 1 && ([...args][0] === undefined || [...args][0].length === 0))) {
+      return
+    }
     // TODO: Performance testing and optimization writing
     const arr = [...args];
     let a = 0,

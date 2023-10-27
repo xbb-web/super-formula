@@ -30,8 +30,12 @@ window.onload = () => {
   const serialziedGrammar = formula.parserInstant.getSerializedGastProductions()
   const htmlText = createSyntaxDiagramsCode(serialziedGrammar)
   const innerFrame = document.getElementById("innerFrame")
-  
-  innerFrame.src = 'data:text/html;charset=utf-8,' + encodeURI(htmlText);
+  innerFrame.contentWindow.document.open();
+  innerFrame.contentWindow.document.write(htmlText);
+  innerFrame.contentWindow.document.close();
+  // innerFrame.src = 'data:text/html;charset=utf-8,' + encodeURI(htmlText);
+  // console.log('%c [ encodeURI(htmlText) ] 🐱-35', 'font-size:13px; background:pink; color:#bf2c9f;', encodeURI(htmlText))
+  console.log('%c [ htmlText ] 🐱-35', 'font-size:13px; background:pink; color:#bf2c9f;', htmlText)
 
   document.getElementById('exec').addEventListener('click', () => {
     const input = document.getElementById('input').value
