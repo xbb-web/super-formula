@@ -171,13 +171,13 @@ export const NumberFunctions = {
     const num = Number(base);
     return isNumber(num) ? log(number, num) : 0;
   },
-  MAX: function(...args: MathType[]) {
+  MAX: function(...args: any[]) {
     if ([...args].length === 0 || ([...args].length === 1 && ([...args][0] === undefined || [...args][0].length === 0))) {
       return
     }
     return max(...args);
   },
-  MIN: function(...args: MathType[]) {
+  MIN: function(...args: any[]) {
     if ([...args].length === 0 || ([...args].length === 1 && ([...args][0] === undefined || [...args][0].length === 0))) {
       return
     }
@@ -192,7 +192,7 @@ export const NumberFunctions = {
   POWER: function(base: number, exponent: number) {
     return pow(base, exponent);
   },
-  PRODUCT: function(...args: MathType[]): number | undefined {
+  PRODUCT: function(...args: any[]): number | undefined {
     if ([...args].length === 0 || ([...args].length === 1 && ([...args][0] === undefined || [...args][0].length === 0))) {
       return
     }
