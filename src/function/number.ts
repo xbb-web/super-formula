@@ -50,8 +50,8 @@ export const NumberFunctions = {
     * @eg SUBTRACT(1,2)
     */
    SUBTRACT: function (
-      num1: MathType = 0,
-      num2: MathType = 0,
+      num1: number = 0,
+      num2: number = 0,
       n?: number,
    ): MathType | string {
       console.log('1231', format(subtract(20000, 19361.151), 3))
