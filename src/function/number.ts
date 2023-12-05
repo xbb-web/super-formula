@@ -196,23 +196,35 @@ export const NumberFunctions = {
     return isNumber(num) ? log(number, num) : 0;
   },
   MAX: function (...args: any[]) {
-    if (
-      [...args].length === 0 ||
-      ([...args].length === 1 &&
-        ([...args][0] === undefined || [...args][0].length === 0))
-    ) {
-      return;
-    }
+    // Confirm that all elements in data must be numbers, null and undefined are converted to 0
+    const arrData = [...args];
+    arrData.forEach((item, index) => {
+      if (item === null || item === undefined) {
+        arrData[index] = 0;
+      } else if (Array.isArray(item)) {
+        item.forEach((element, elementIndex) => {
+          if (element === null || element === undefined) {
+            item[elementIndex] = 0;
+          }
+        });
+      }
+    });
     return max(...args);
   },
   MIN: function (...args: any[]) {
-    if (
-      [...args].length === 0 ||
-      ([...args].length === 1 &&
-        ([...args][0] === undefined || [...args][0].length === 0))
-    ) {
-      return;
-    }
+    // Confirm that all elements in data must be numbers, null and undefined are converted to 0
+    const arrData = [...args];
+    arrData.forEach((item, index) => {
+      if (item === null || item === undefined) {
+        arrData[index] = 0;
+      } else if (Array.isArray(item)) {
+        item.forEach((element, elementIndex) => {
+          if (element === null || element === undefined) {
+            item[elementIndex] = 0;
+          }
+        });
+      }
+    });
     return min(...args);
   },
   MOD: function <T extends number | BigNumber | Fraction | MathCollection>(
@@ -253,6 +265,7 @@ export const NumberFunctions = {
   ) {
     let sum: number | string = 0;
     conditions.forEach((item, index) => {
+      if (item === null) return
       let val = isNumber(values[index]) ? values[index] : 0;
       if (new Function(`return "${item}"${exp}`)()) {
         sum += val;

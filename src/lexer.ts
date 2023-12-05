@@ -153,7 +153,7 @@ export const NumberMark = createToken({
 export const StringMark = createToken({
   name: "StringMark",
   pattern:
-    /["|'][\u4e00-\u9fa5a-zA-Z0-9\uFF00-\uFFEF\u3000-\u303F\uFF01-\uFF5Ea-zA-Z0-9=><!/,!@#$%^&*,.(){}\\|;:<>/?~`\[\]-]+["|']/,
+    /["|'][\u4e00-\u9fa5a-zA-Z0-9\uFF00-\uFFEF\u3000-\u303F\uFF01-\uFF5Ea-zA-Z0-9=><!/,!@#$%^&*,.(){}\\|;:<>/?~`'\[\]-]+["|']/,
   categories: VariableSeatMark,
 });
 
