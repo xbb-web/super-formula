@@ -45,7 +45,7 @@ export const NumberFunctions = {
   ): MathType | string {
     return n
       ? Number(format(add(num1, num2), { notation: "fixed", precision: n }))
-      : add(num1, num2);
+      : Number(format(add(num1, num2)));
   },
   /**
    * Get the exact difference between two numbers.
@@ -60,12 +60,11 @@ export const NumberFunctions = {
     num2: number = 0,
     n?: number
   ): MathType | string {
-    console.log("1231", format(subtract(20000, 19361.151), 3));
     return n
       ? Number(
           format(subtract(num1, num2), { notation: "fixed", precision: n })
         )
-      : subtract(bignumber(num1), bignumber(num2));
+      : Number(format(subtract(bignumber(num1), bignumber(num2))));
   },
   /**
    * Get the exact product of two numbers.
@@ -84,7 +83,7 @@ export const NumberFunctions = {
       ? Number(
           format(multiply(num1, num2), { notation: "fixed", precision: n })
         )
-      : multiply(num1, num2);
+      : Number(format(multiply(num1, num2)));
   },
   /**
    * Get the exact quotient of two numbers.
@@ -101,7 +100,7 @@ export const NumberFunctions = {
   ): MathType | string {
     return n
       ? Number(format(divide(num1, num2), { notation: "fixed", precision: n }))
-      : divide(num1, num2);
+      : Number(format(divide(num1, num2)));
   },
   ABS: function (num: number = 0): number {
     return abs(num);
