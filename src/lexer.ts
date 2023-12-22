@@ -57,7 +57,7 @@ export const AddMark = createToken({
  */
 export const SubMark = createToken({
   name: "SubMark",
-  pattern: /(\d+)-(\d+)/,
+  pattern: /\-/,
   categories: AddSubSeatMark,
 });
 
