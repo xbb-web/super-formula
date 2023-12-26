@@ -28,6 +28,7 @@ import {
   StringMark,
   ArrayStartMark,
   ArrayEndMark,
+  SubMark,
 } from "./lexer";
 import { deepGet } from "./utils";
 import { FunctionSummary } from "./function";
@@ -124,9 +125,25 @@ export class FormulaParser extends EmbeddedActionsParser {
         },
       },
       { ALT: () => Number(this.CONSUME(NumberMark).image) },
+      { ALT: () => this.SUBRULE(this.NegativeNum) },
       { ALT: () => this.SUBRULE(this.ArrayOp) },
     ]);
   });
+
+  private NegativeNum = this.RULE("NegativeNumOp", () => {
+    this.CONSUME(SubMark);
+    const rightValue = this.OR([
+      {
+        ALT: () => {
+          const valMark = this.CONSUME(VariableMark).image;
+          // Operation of value extraction, eg: {self.num_26} -> 1
+          return deepGet(this.data, valMark.substring(1, valMark.length - 1));
+        },
+      },
+      { ALT: () => Number(this.CONSUME(NumberMark).image) },
+    ]);
+    return -rightValue
+  })
 
   /**
    * Compare Expression, support: > | < | >= | <= | == | !=
