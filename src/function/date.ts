@@ -45,7 +45,8 @@ export const DateFunctions = {
     }
     return date;
   },
-  DATEDELTA: function(timestamp: number, addDay: number): number {
+  DATEDELTA: function(timestamp: number, addDay: number = 0): number | undefined {
+    if (!timestamp) return
     const len = timestamp.toString().length
     const returnTime = createDayjs(timestamp).add(addDay, 'day').valueOf()
     if (len === 13) return returnTime

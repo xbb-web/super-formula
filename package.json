@@ -1,6 +1,6 @@
 {
   "name": "super-form-formula",
-  "version": "1.2.5",
+  "version": "1.2.7",
   "description": "a formula realize",
   "main": "lib/umd/super-form-formula.umd.js",
   "types": "lib/types/index.d.ts",
@@ -24,7 +24,8 @@
   "dependencies": {
     "chevrotain": "^10.1.2",
     "dayjs": "^1.11.3",
-    "mathjs": "11.0.1"
+    "mathjs": "11.0.1",
+    "nzh": "^1.0.12"
   },
   "devDependencies": {
     "@babel/core": "^7.18.9",
