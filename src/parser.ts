@@ -120,8 +120,19 @@ export class FormulaParser extends EmbeddedActionsParser {
       {
         ALT: () => {
           const valMark = this.CONSUME(VariableMark).image;
+          let valId = deepGet(this.data, valMark.substring(1, valMark.length - 1))
+          // After varmark maybe have get array value operate like {self.subForm_1.num_1}[1],it should be regarded as a whole.
+          // Try consume array mark.
+          this.MANY(() => {
+            this.CONSUME(ArrayStartMark)
+            let number = this.CONSUME1(NumberMark).image;
+            this.CONSUME2(ArrayEndMark)
+            if (Number.isSafeInteger(+number)) {
+              valId = valId[number]
+            }
+          });
           // Operation of value extraction, eg: {self.num_26} -> 1
-          return deepGet(this.data, valMark.substring(1, valMark.length - 1));
+          return valId;
         },
       },
       { ALT: () => Number(this.CONSUME(NumberMark).image) },
@@ -240,6 +251,7 @@ export class FormulaParser extends EmbeddedActionsParser {
     this.CONSUME2(ArrayEndMark)
     // Use ACTION can let JSON.parse be safe.detail: https://chevrotain.io/docs/guide/internals.html#assumption-1-the-parser-won-t-throw-errors-during-recording
     return this.ACTION(() => {
+      console.log('%c [ arr ] 🐱-244', 'font-size:13px; background:pink; color:#bf2c9f;', arr)
       return arr;
     });
   });

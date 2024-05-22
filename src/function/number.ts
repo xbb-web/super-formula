@@ -39,13 +39,13 @@ export const NumberFunctions = {
    * @eg ADD(1,2)
    */
   ADD: function (
-    num1: MathType = 0,
-    num2: MathType = 0,
+    num1: number = 0,
+    num2: number = 0,
     n?: number
   ): MathType | string {
     return n
       ? Number(format(add(num1, num2), { notation: "fixed", precision: n }))
-      : Number(format(add(num1, num2)));
+      : Number(format(add(bignumber(num1), bignumber(num2))));
   },
   /**
    * Get the exact difference between two numbers.
@@ -60,6 +60,8 @@ export const NumberFunctions = {
     num2: number = 0,
     n?: number
   ): MathType | string {
+    if (!num1) { num1 = 0 }
+    if (!num2) { num2 = 0 }
     return n
       ? Number(
           format(subtract(num1, num2), { notation: "fixed", precision: n })
@@ -75,15 +77,16 @@ export const NumberFunctions = {
    * @eg MULTIPLY(1,2)
    */
   MULTIPLY: function (
-    num1: MathType = 0,
-    num2: MathType = 0,
+    num1: number = 0,
+    num2: number = 0,
     n?: number
   ): MathType | string {
+    console.log(num1, num2, Number(format(multiply(num1, num2))))
     return n
       ? Number(
           format(multiply(num1, num2), { notation: "fixed", precision: n })
         )
-      : Number(format(multiply(num1, num2)));
+      : Number(format(multiply(bignumber(num1), bignumber(num2))));
   },
   /**
    * Get the exact quotient of two numbers.
@@ -94,13 +97,13 @@ export const NumberFunctions = {
    * @eg DIVIDE(1,2)
    */
   DIVIDE: function (
-    num1: MathType = 0,
-    num2: MathType = 0,
+    num1: number = 0,
+    num2: number = 0,
     n?: number
   ): MathType | string {
     return n
       ? Number(format(divide(num1, num2), { notation: "fixed", precision: n }))
-      : Number(format(divide(num1, num2)));
+      : Number(format(divide(bignumber(num1), bignumber(num2))));
   },
   ABS: function (num: number = 0): number {
     return abs(num);

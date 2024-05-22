@@ -11,6 +11,7 @@ export class Formula {
   }
   exec(string: string, _data?: Record<string | number | symbol, any>) {
     const result = FormulaLexer.tokenize(string)
+    console.log('%c [ result ] 🐱-14', 'font-size:13px; background:pink; color:#bf2c9f;', result)
     this.parserInstant.changeCustomData(_data)
     this.parserInstant.input = result.tokens
     const cst = this.parserInstant.expression()
