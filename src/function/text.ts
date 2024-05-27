@@ -1,4 +1,4 @@
-import { convertCurrency, numberToChinese } from "../utils";
+import { convertCurrency, numberToChinese, numberFormat } from "../utils";
 
 const isObjectEmpty = function (a: any) {
   if (a == null) {
@@ -67,6 +67,10 @@ export const TextFunctions = {
   },
   // TODO: check full function
   TEXT: function (number: number, text_format = "") {
+    const regExp = new RegExp(/[#0]+,?[#0]*\.?[#0]*%?/)
+    if (text_format.match(regExp)) {
+      return numberFormat(number, text_format)
+    }
     switch (text_format) {
       case "[Num1]":
         return numberToChinese(number);
