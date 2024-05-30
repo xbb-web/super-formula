@@ -125,7 +125,7 @@ export class FormulaParser extends EmbeddedActionsParser {
           // Try consume array mark.
           this.MANY(() => {
             this.CONSUME(ArrayStartMark)
-            let number = this.CONSUME1(NumberMark).image;
+            let number = this.SUBRULE(this.SummaryEntry) as number;
             this.CONSUME2(ArrayEndMark)
             if (Number.isSafeInteger(+number)) {
               valId = valId[number]
