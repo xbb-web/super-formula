@@ -8,7 +8,7 @@ dayjs.extend(weekOfYear);
 
 const createDayjs = (param: number | Date): dayjs.Dayjs => {
   // unix time
-  if (typeof param === 'number' && String(param).length === 10) {
+  if (typeof param === 'number' && String(param).length <= 10) {
     return dayjs.unix(param);
   } else {
     return dayjs(param);
@@ -75,6 +75,7 @@ export const DateFunctions = {
   },
   MONTH: function(timestamp: number) {
     if (timestamp === undefined) return;
+    console.log(createDayjs(timestamp))
     return createDayjs(timestamp).month() + 1;
   },
   TIME: function(h: number, m: number, s: number) {
