@@ -43,6 +43,8 @@ export const NumberFunctions = {
     num2: number = 0,
     n?: number
   ): MathType | string {
+    if (!num1) num1 = 0
+    if (!num2) num2 = 0
     return n
       ? Number(format(add(num1, num2), { notation: "fixed", precision: n }))
       : Number(format(add(bignumber(num1), bignumber(num2))));
@@ -81,7 +83,8 @@ export const NumberFunctions = {
     num2: number = 0,
     n?: number
   ): MathType | string {
-    console.log(num1, num2, Number(format(multiply(num1, num2))))
+    if (!num1) num1 = 0
+    if (!num2) num2 = 0
     return n
       ? Number(
           format(multiply(num1, num2), { notation: "fixed", precision: n })
@@ -97,10 +100,13 @@ export const NumberFunctions = {
    * @eg DIVIDE(1,2)
    */
   DIVIDE: function (
+
     num1: number = 0,
     num2: number = 0,
     n?: number
   ): MathType | string {
+    if (!num1) num1 = 0
+    if (!num2) num2 = 0
     return n
       ? Number(format(divide(num1, num2), { notation: "fixed", precision: n }))
       : Number(format(divide(bignumber(num1), bignumber(num2))));
