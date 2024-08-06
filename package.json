@@ -1,6 +1,6 @@
 {
   "name": "super-form-formula",
-  "version": "1.3.8",
+  "version": "1.3.9",
   "description": "a formula realize",
   "main": "lib/umd/super-form-formula.umd.js",
   "types": "lib/types/index.d.ts",
