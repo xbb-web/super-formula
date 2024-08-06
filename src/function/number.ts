@@ -115,6 +115,10 @@ export const NumberFunctions = {
     return abs(num);
   },
   AVERAGE: function (...arr: Array<number | BigNumber | Fraction>) {
+    const arg = [...arr]
+    if (Array.isArray(arg[0])) {
+      return sum(...arg[0]) / arg[0].length
+    }
     return sum(...arr) / [...arr].length;
   },
   CEILING: function (num1: number = 0, num2: number = 0) {
