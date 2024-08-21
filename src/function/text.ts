@@ -18,7 +18,10 @@ const isObjectEmpty = function (a: any) {
   return isNaN(a);
 };
 export const TextFunctions = {
-  JOIN: (params: Array<any>, split: string) => params.join(split),
+  JOIN: (params: Array<any>, split: string) => {
+    if (typeof params === 'string') return params
+    return params.join(split)
+  },
   CONCATENATE: function (...args: Array<string>) {
     let res = "";
     [...args].forEach((item = "") => {
