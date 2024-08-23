@@ -106,7 +106,8 @@ export const NumberFunctions = {
     n?: number
   ): MathType | string {
     if (!num1) num1 = 0
-    if (!num2) num2 = 0
+    // The dividend(num2) cannot be 0, otherwise it will result in results such as infinity and NaN
+    if (!num2) return 0
     return n
       ? Number(format(divide(num1, num2), { notation: "fixed", precision: n }))
       : Number(format(divide(bignumber(num1), bignumber(num2))));
