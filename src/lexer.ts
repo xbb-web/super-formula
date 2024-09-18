@@ -122,6 +122,17 @@ export const LteMark = createToken({
 });
 
 /**
+ * LteMark
+ * @desc eg: a >= b.
+ */
+export const WithMark = createToken({
+  name: "WithMark",
+  pattern: /&&/,
+  categories: CompareSeatMark,
+});
+
+
+/**
  * CommaMark
  * @desc split for function sentence
  */
@@ -153,7 +164,7 @@ export const NumberMark = createToken({
 export const StringMark = createToken({
   name: "StringMark",
   pattern:
-  /(['"])[\u4e00-\u9fa5a-zA-Z0-9\uFF00-\uFFEF\u3000-\u303F\uFF01-\uFF5E\u3300-\u33FF\u25A0-\u25FF\u2E80-\u2EFF\u2F00-\u2FDF\u2FF0-\u2FFF\u4DC0-\u4DFF\uA490-\uA4CF\uAC00-\uD7AF\uFF00-\uFFEF\u2190-\u21FF\s=><!/,!@#$%^&*+-,.(){}\\|;:<>/?~`' \[\]-]*?\1/,
+  /(['"])[\u4e00-\u9fa5a-zA-Z0-9\uFF00-\uFFEF\u3000-\u303F\uFF01-\uFF5E\u3300-\u33FF\u25A0-\u25FF\u2E80-\u2EFF\u2F00-\u2FDF\u2FF0-\u2FFF\u4DC0-\u4DFF\uA490-\uA4CF\uAC00-\uD7AF\uFF00-\uFFEF\u2190-\u21FF\s=><!/,!@#$%^&*+-,.(){}\\|;:<>/?~¥€`_' \[\]-]*?\1/,
   categories: VariableSeatMark,
 });
 
@@ -234,6 +245,7 @@ export const AllLexerToken = [
   LteMark,
   GtMark,
   LtMark,
+  WithMark,
   EqualMark,
   UnEqualMark,
   WhiteSpace,

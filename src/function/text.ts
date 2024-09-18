@@ -25,6 +25,7 @@ export const TextFunctions = {
   CONCATENATE: function (...args: Array<string>) {
     let res = "";
     [...args].forEach((item = "") => {
+      console.log('%c [ item ] 🐱-28', 'font-size:13px; background:pink; color:#bf2c9f;', item)
       res += item;
     });
     return res;

@@ -29,6 +29,7 @@ import {
   ArrayStartMark,
   ArrayEndMark,
   SubMark,
+  WithMark
 } from "./lexer";
 import { deepGet } from "./utils";
 import { FunctionSummary } from "./function";
@@ -80,11 +81,19 @@ export class FormulaParser extends EmbeddedActionsParser {
       },
     });
     this.CONSUME1(CloseParen);
+    let arrayOpNumber
+    this.MANY(() => {
+      this.CONSUME2(ArrayStartMark)
+      arrayOpNumber = this.CONSUME(NumberMark).image;
+      this.CONSUME3(ArrayEndMark)
+    });
     return this.ACTION(() => {
-      return (
-        this.SummaryFunction[functionName] &&
-        this.SummaryFunction[functionName](...params)
-      );
+      let functionRes = this.SummaryFunction[functionName] &&
+      this.SummaryFunction[functionName](...params)
+      if (Number.isSafeInteger(+arrayOpNumber)) {
+        functionRes = functionRes[arrayOpNumber]
+      }
+      return functionRes;
     });
   });
 
@@ -157,7 +166,7 @@ export class FormulaParser extends EmbeddedActionsParser {
   })
 
   /**
-   * Compare Expression, support: > | < | >= | <= | == | !=
+   * Compare Expression, support: > | < | >= | <= | == | != | =
    */
   private CompareExpression = this.RULE("CompareExpression", () => {
     // TODO: Fix the value type.
@@ -178,6 +187,8 @@ export class FormulaParser extends EmbeddedActionsParser {
         leftValue = leftValue == rightValue;
       } else if (tokenMatcher(op, UnEqualMark)) {
         leftValue = leftValue != rightValue;
+      } else if (tokenMatcher(op, WithMark)) {
+        leftValue = leftValue && rightValue;
       }
     });
     return leftValue;

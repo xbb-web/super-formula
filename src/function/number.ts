@@ -29,6 +29,14 @@ import {
 
 import { ArrayNumberInner } from "../types";
 
+function formatInput(input): number {
+  if (Array.isArray(input)) {
+    return sum(input);
+  } else {
+    return input || 0
+  }
+}
+
 export const NumberFunctions = {
   /**
    * Get the accuracy of the two numbers.
@@ -43,8 +51,8 @@ export const NumberFunctions = {
     num2: number = 0,
     n?: number
   ): MathType | string {
-    if (!num1) num1 = 0
-    if (!num2) num2 = 0
+    num1 = formatInput(num1)
+    num2 = formatInput(num2)
     return n
       ? Number(format(add(num1, num2), { notation: "fixed", precision: n }))
       : Number(format(add(bignumber(num1), bignumber(num2))));
@@ -62,8 +70,8 @@ export const NumberFunctions = {
     num2: number = 0,
     n?: number
   ): MathType | string {
-    if (!num1) { num1 = 0 }
-    if (!num2) { num2 = 0 }
+    num1 = formatInput(num1)
+    num2 = formatInput(num2)
     return n
       ? Number(
           format(subtract(num1, num2), { notation: "fixed", precision: n })
@@ -83,8 +91,8 @@ export const NumberFunctions = {
     num2: number = 0,
     n?: number
   ): MathType | string {
-    if (!num1) num1 = 0
-    if (!num2) num2 = 0
+    num1 = formatInput(num1)
+    num2 = formatInput(num2)
     return n
       ? Number(
           format(multiply(num1, num2), { notation: "fixed", precision: n })
@@ -105,9 +113,10 @@ export const NumberFunctions = {
     num2: number = 0,
     n?: number
   ): MathType | string {
-    if (!num1) num1 = 0
     // The dividend(num2) cannot be 0, otherwise it will result in results such as infinity and NaN
     if (!num2) return 0
+    num1 = formatInput(num1)
+    num2 = formatInput(num2)
     return n
       ? Number(format(divide(num1, num2), { notation: "fixed", precision: n }))
       : Number(format(divide(bignumber(num1), bignumber(num2))));
