@@ -116,12 +116,15 @@ export const DateFunctions = {
     return new Date().getTime();
   },
   WEEKDAY: function(timestamp: number) {
+    if (!timestamp) return ''
     return createDayjs(timestamp).day();
   },
   WEEKNUM: function(timestamp: number) {
+    if (!timestamp) return ''
     return createDayjs(timestamp).week();
   },
   YEAR: function(timestamp: number) {
+    if (!timestamp) return ''
     return createDayjs(timestamp).year();
   },
 };
