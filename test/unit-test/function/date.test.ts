@@ -26,7 +26,9 @@ describe('DateFunction', () => {
     expect(DateFunctions.DAYS(1660262400000, 1657670400000)).toEqual(30);
   });
   it('HOUR', () => {
-    expect(DateFunctions.HOUR(1657704045734)).toEqual(17);
+    // 创建一个明确的本地时间：2022-07-13 15:30:00
+    const testDate = new Date(2022, 6, 13, 15, 30, 0);
+    expect(DateFunctions.HOUR(testDate.getTime())).toEqual(15);
   });
   it('ISOWEEKNUM', () => {
     expect(DateFunctions.ISOWEEKNUM(1657670400000)).toEqual(28);
