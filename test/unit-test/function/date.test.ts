@@ -1,6 +1,10 @@
 import { DateFunctions } from '../../../src/function/date';
 
 describe('DateFunction', () => {
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it('DATE', () => {
     expect(DateFunctions.DATE(1657699891483)).toEqual(new Date(1657699891483));
     expect(DateFunctions.DATE(1657699891)).toEqual(new Date(1657699891000));
@@ -41,10 +45,12 @@ describe('DateFunction', () => {
     expect(DateFunctions.TIMESTAMP(date)).toEqual(date.getTime());
   });
   it('NOW', () => {
-    jest.useFakeTimers();
+    jest.useFakeTimers({
+      doNotFake: ['performance', 'hrtime'],
+    });
     jest.setSystemTime(new Date('2022-07-13 00:00:00'));
     expect(DateFunctions.NOW()).toEqual(
-      new Date('2022-07-13 00:00:00').getTime(),
+      parseInt(String(new Date('2022-07-13 00:00:00').getTime() / 1000)),
     );
   });
   it('ONEYEARRANGDAY', () => {
@@ -56,7 +62,9 @@ describe('DateFunction', () => {
     ).toEqual(0);
   });
   it('TODAY', () => {
-    jest.useFakeTimers();
+    jest.useFakeTimers({
+      doNotFake: ['performance', 'hrtime'],
+    });
     jest.setSystemTime(new Date('2022-07-13 00:00:00'));
     expect(DateFunctions.TODAY()).toEqual(
       new Date('2022-07-13 00:00:00').getTime(),

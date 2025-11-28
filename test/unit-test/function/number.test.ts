@@ -16,7 +16,7 @@ describe('NumberFunction', () => {
   });
   it('DIVIDE', () => {
     expect(NumberFunctions.DIVIDE(4, 2)).toEqual(2);
-    expect(NumberFunctions.DIVIDE(1, 0.3, 2)).toEqual(3.3);
+    expect(NumberFunctions.DIVIDE(1, 0.3, 2)).toEqual(3.33);
   });
   it('ABS', () => {
     expect(NumberFunctions.ABS(-8)).toEqual(8);
