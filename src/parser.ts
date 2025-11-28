@@ -262,7 +262,7 @@ export class FormulaParser extends EmbeddedActionsParser {
     this.CONSUME2(ArrayEndMark)
     // Use ACTION can let JSON.parse be safe.detail: https://chevrotain.io/docs/guide/internals.html#assumption-1-the-parser-won-t-throw-errors-during-recording
     return this.ACTION(() => {
-      console.log('%c [ arr ] 🐱-244', 'font-size:13px; background:pink; color:#bf2c9f;', arr)
+      // console.log('%c [ arr ] 🐱-244', 'font-size:13px; background:pink; color:#bf2c9f;', arr)
       return arr;
     });
   });
