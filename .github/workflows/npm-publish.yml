@@ -1,0 +1,47 @@
+name: 发布到 NPM
+
+# 当推送新的版本tag时触发（如 v1.5.3, v2.0.0）
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      id-token: write  # 需要此权限用于npm provenance和OIDC认证
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+      
+      - name: 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+      
+      - name: 安装依赖
+        run: npm ci
+      
+      - name: 运行测试
+        run: npm test
+      
+      - name: 构建项目
+        run: npm run build
+      
+      # 方法1: 使用 Trusted Publishers (推荐，无需令牌)
+      # 如果在 npm 上配置了 Trusted Publishers，取消下面的注释并删除方法2
+      - name: 发布到 NPM (Trusted Publishers)
+        run: npm publish --provenance --access public
+      
+      # 方法2: 使用细粒度访问令牌 (Granular Access Token)
+      # 注意：令牌最长有效期90天，需要定期更新
+      # - name: 发布到 NPM (使用令牌)
+        # run: npm publish --provenance --access public
+        # env:
+        #   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
