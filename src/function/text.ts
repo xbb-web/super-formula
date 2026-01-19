@@ -71,6 +71,9 @@ export const TextFunctions = {
   },
   // TODO: check full function
   TEXT: function (number: number, text_format = "") {
+    if (number === undefined) {
+      return "";
+    }
     const regExp = new RegExp(/[#0]+,?[#0]*\.?[#0]*%?/)
     if (text_format.match(regExp)) {
       return numberFormat(number, text_format)
